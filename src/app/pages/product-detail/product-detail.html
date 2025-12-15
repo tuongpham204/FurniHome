@@ -1,47 +1,36 @@
-<div class="min-h-screen bg-gray-50">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <div *ngIf="loading" class="flex justify-center items-center min-h-[500px]">
     <div class="text-center">
-      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-      <p class="mt-4 text-gray-600">Loading product...</p>
+      <div
+        class="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-blue-600 mx-auto mb-4"
+      ></div>
+      <p class="text-lg font-medium text-gray-700">Discovering your perfect piece...</p>
     </div>
   </div>
 
   <div *ngIf="error && !loading" class="container mx-auto px-4 py-12">
-    <div class="max-w-md mx-auto text-center bg-white rounded-lg shadow-sm p-8">
-      <div class="text-red-500 text-5xl mb-4">⚠️</div>
-      <h2 class="text-2xl font-bold text-gray-900 mb-2">Oops!</h2>
-      <p class="text-gray-600 mb-6">{{ error }}</p>
+    <div class="max-w-md mx-auto text-center bg-white rounded-2xl shadow-xl p-8">
+      <div class="text-red-400 text-6xl mb-4">⚠️</div>
+      <h2 class="text-3xl font-bold text-gray-900 mb-2">Something went wrong!</h2>
+      <p class="text-gray-600 mb-6 leading-relaxed">{{ error }}</p>
       <button
         (click)="goBack()"
-        class="px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+        class="px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl"
       >
-        Back to Products
+        Back to Collection
       </button>
     </div>
   </div>
 
-  <div *ngIf="!loading && !error && product" class="container mx-auto px-4 py-8">
-    <!-- Product name test -->
-    <h1 class="text-2xl mb-4">{{ product.name }}</h1>
-
-    <!-- Breadcrumb -->
-    <div class="flex items-center gap-2 text-sm text-gray-600 mb-6">
-      <a href="#" (click)="goBack(); $event.preventDefault()" class="hover:text-gray-900"
-        >Products</a
-      >
-      <span>/</span>
-      <span class="text-gray-900 font-medium">{{ product.name }}</span>
-    </div>
-
-    <!-- Main Product Section -->
-    <div class="bg-white rounded-2xl shadow-sm overflow-hidden mb-8">
+  <div *ngIf="!loading && !error && product" class="container mx-auto px-4 py-12">
+    <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
         <!-- Left: Image Section -->
-        <div class="relative bg-gray-100 p-8 lg:p-12">
+        <div class="relative bg-linear-to-br from-gray-50 to-gray-100 p-6 lg:p-10">
           <!-- Discount Badge -->
           <div *ngIf="hasDiscount" class="absolute top-6 left-6 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-red-500 text-white px-3 py-1.5 rounded-full text-sm font-bold shadow-lg"
+              class="inline-flex items-center gap-1 bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
             >
               <span>🔥</span>
               <span>-{{ discountPercentage }}% OFF</span>
@@ -50,7 +39,7 @@
 
           <div *ngIf="product.featured" class="absolute top-6 right-6 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-yellow-400 text-gray-900 px-3 py-1.5 rounded-full text-sm font-bold shadow-lg"
+              class="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
             >
               <span>⭐</span>
               <span>Featured</span>
@@ -58,58 +47,71 @@
           </div>
 
           <!-- Main Image -->
-          <div class="aspect-square rounded-xl overflow-hidden bg-white shadow-md">
+          <div
+            class="aspect-square rounded-2xl overflow-hidden bg-white shadow-2xl mx-auto max-w-full"
+          >
             <img
               [src]="product.image_path"
               [alt]="product.name"
-              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+              class="w-full h-full object-cover hover:scale-110 transition-all duration-500 ease-out"
             />
           </div>
 
-          <!-- Thumbnail Gallery Placeholder -->
-          <div class="mt-4 grid grid-cols-4 gap-2">
-            <div class="aspect-square rounded-lg bg-white border-2 border-gray-300 overflow-hidden">
-              <img [src]="product.image_path" class="w-full h-full object-cover opacity-100" />
+          <!-- Thumbnail Gallery -->
+          <div class="mt-6 grid grid-cols-4 gap-2">
+            <div
+              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+            >
+              <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
-            <div class="aspect-square rounded-lg bg-gray-200 flex items-center justify-center">
-              <span class="text-gray-400 text-xs">No image</span>
+            <div
+              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+            >
+              <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
-            <div class="aspect-square rounded-lg bg-gray-200 flex items-center justify-center">
-              <span class="text-gray-400 text-xs">No image</span>
+            <div
+              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+            >
+              <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
-            <div class="aspect-square rounded-lg bg-gray-200 flex items-center justify-center">
-              <span class="text-gray-400 text-xs">No image</span>
+            <div
+              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+            >
+              <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
           </div>
         </div>
 
         <!-- Right: Product Info Section -->
-        <div class="p-8 lg:p-12 flex flex-col">
+        <div class="p-8 lg:p-10 flex flex-col">
           <!-- Category Tag -->
           <div class="mb-4">
             <span
-              class="inline-block px-3 py-1 bg-gray-100 text-gray-700 text-xs font-semibold uppercase tracking-wider rounded-full"
+              class="inline-block px-3 py-1.5 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold uppercase tracking-wider rounded-full shadow-md"
             >
               {{ product.category }}
             </span>
           </div>
 
           <!-- Product Name -->
-          <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+          <h1
+            class="text-3xl lg:text-3xl font-bold text-gray-900 mb-4 leading-tight bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text"
+          >
             {{ product.name }}
           </h1>
 
           <!-- Price Section -->
-          <div class="mb-6 pb-6 border-b border-gray-200">
+          <div class="mb-6 pb-6 border-b border-gray-100">
             <div class="flex items-baseline gap-3 mb-2">
-              <span class="text-4xl font-bold text-gray-900">
-                ${{ displayPrice | number : '1.2-2' }}
-              </span>
+              <span class="text-3xl font-bold"> ${{ displayPrice | number : '1.2-2' }} </span>
               <span *ngIf="hasDiscount" class="text-xl text-gray-400 line-through">
                 ${{ product.price | number : '1.2-2' }}
               </span>
             </div>
-            <p *ngIf="hasDiscount" class="text-sm text-green-600 font-medium">
+            <p
+              *ngIf="hasDiscount"
+              class="text-sm px-3 py-1 rounded-full inline-flex items-center gap-1"
+            >
               You save ${{ product.price - product.discount_price! | number : '1.2-2' }} ({{
                 discountPercentage
               }}%)
@@ -117,10 +119,10 @@
           </div>
 
           <!-- Stock Status -->
-          <div class="flex items-center gap-2 mb-6">
+          <div class="flex items-center gap-3 mb-6">
             <div class="flex items-center gap-2">
               <span
-                class="inline-block w-2.5 h-2.5 rounded-full"
+                class="inline-block w-3 h-3 rounded-full shadow-md"
                 [ngClass]="{
                   'bg-green-500': inStock && product.stock > 10,
                   'bg-yellow-500': inStock && product.stock <= 10,
@@ -128,7 +130,7 @@
                 }"
               ></span>
               <span
-                class="text-sm font-medium"
+                class="text-sm font-semibold"
                 [ngClass]="{
                   'text-green-600': inStock && product.stock > 10,
                   'text-yellow-600': inStock && product.stock <= 10,
@@ -136,145 +138,276 @@
                 }"
               >
                 <ng-container *ngIf="inStock">
-                  {{ product.stock > 10 ? 'In Stock' : 'Only ' + product.stock + ' left!' }}
+                  {{
+                    product.stock > 10
+                      ? 'In Stock - Ready to Ship'
+                      : 'Hurry! Only ' + product.stock + ' left!'
+                  }}
                 </ng-container>
-                <ng-container *ngIf="!inStock"> Out of Stock </ng-container>
+                <ng-container *ngIf="!inStock"> Out of Stock - Notify Me </ng-container>
               </span>
             </div>
           </div>
 
           <!-- Description -->
-          <div class="mb-8 border-2 border-gray-400 p-4">
-            <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-3">
+          <div class="mb-8 pl-4 bg-blue-50 p-4 rounded-xl">
+            <h3
+              class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3 flex items-center gap-2"
+            >
               Description
             </h3>
-            <p class="text-gray-600 leading-relaxed">
+            <p class="text-gray-700 leading-relaxed text-base">
               {{ product.description }}
             </p>
           </div>
 
           <!-- Specifications -->
-          <div class="mb-8 p-6 bg-gray-50 rounded-xl">
-            <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wide mb-4">
+          <div class="mb-8 p-6 bg-gray-100 rounded-2xl shadow-lg">
+            <h3
+              class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2"
+            >
               Specifications
             </h3>
 
-            <div class="grid grid-cols-2 gap-4">
-              <div class="flex flex-col">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
+              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Wood Type</span>
-                <span class="text-sm font-semibold text-gray-900 capitalize">{{
+                <span class="text-base font-semibold text-gray-900 capitalize">{{
                   product.wood_type
                 }}</span>
               </div>
-              <div class="flex flex-col">
+              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Finish</span>
-                <span class="text-sm font-semibold text-gray-900 capitalize">{{
+                <span class="text-base font-semibold text-gray-900 capitalize">{{
                   product.finish
                 }}</span>
               </div>
-              <div class="flex flex-col">
+              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Dimensions</span>
-                <span class="text-sm font-semibold text-gray-900">
+                <span class="text-base font-semibold text-gray-900">
                   {{ product.dimensions.width }}" × {{ product.dimensions.depth }}" ×
                   {{ product.dimensions.height }}"
                 </span>
               </div>
-              <div class="flex flex-col">
+              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
                 <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Weight</span>
-                <span class="text-sm font-semibold text-gray-900">{{ product.weight }} lbs</span>
+                <span class="text-base font-semibold text-gray-900">{{ product.weight }} lbs</span>
               </div>
             </div>
 
-            <div class="mt-4 pt-4 border-t border-gray-200">
+            <div class="pt-4 border-t border-gray-200">
               <span class="text-xs text-gray-500 uppercase tracking-wide">SKU: </span>
-              <span class="text-xs font-mono text-gray-700">{{ product.sku }}</span>
+              <span
+                class="text-sm font-mono text-gray-700 font-semibold bg-gray-100 px-2 py-1 rounded"
+                >{{ product.sku }}</span
+              >
             </div>
           </div>
 
-          <!-- Quantity & Add to Cart -->
+          <!-- Quantity & Wishlist -->
           <div class="mt-auto space-y-4">
             <!-- Quantity Selector -->
-            <div class="flex items-center gap-4">
-              <span class="text-sm font-semibold text-gray-900">Quantity:</span>
-              <div class="flex items-center border-2 border-gray-300 rounded-lg overflow-hidden">
+            <div class="flex items-center justify-between">
+              <span class="text-sm font-bold text-gray-900">Quantity:</span>
+              <div
+                class="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden shadow-sm"
+              >
                 <button
                   (click)="decreaseQuantity()"
                   [disabled]="quantity <= 1"
-                  class="p-3 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  class="p-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
                 >
-                  <lucide-icon [img]="Minus" class="w-4 h-4"></lucide-icon>
+                  <lucide-icon [img]="Minus" class="w-4 h-4 text-gray-600"></lucide-icon>
                 </button>
-                <div class="px-6 py-3 min-w-16 text-center">
-                  <span class="font-bold text-lg">{{ quantity }}</span>
+                <div class="px-6 py-3 min-w-16 text-center bg-gray-50">
+                  <span class="font-bold text-xl text-gray-900">{{ quantity }}</span>
                 </div>
                 <button
                   (click)="increaseQuantity()"
                   [disabled]="!inStock || quantity >= product.stock"
-                  class="p-3 hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  class="p-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
                 >
-                  <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                  <lucide-icon [img]="Plus" class="w-4 h-4 text-gray-600"></lucide-icon>
                 </button>
               </div>
             </div>
 
             <!-- Total Price -->
-            <div class="mb-6 pb-6 border-b border-gray-200">
-              <div class="flex items-baseline gap-3 mb-2">
-                <span class="text-xl font-bold text-gray-900">
+            <div class="mb-6 pb-6 border-b border-gray-100">
+              <div class="flex items-baseline gap-3">
+                <span class="text-2xl font-bold">
                   ${{ (quantity > 1 ? totalPrice : displayPrice) | number : '1.2-2' }}
                 </span>
+                <span class="text-sm text-gray-500">Total</span>
               </div>
             </div>
 
             <!-- Action Buttons -->
-            <div class="flex gap-3">
+            <div class="flex gap-3 mb-6">
               <button
-                (click)="addToCart(product)" 
+                (click)="addToCart(product)"
                 [disabled]="!inStock"
-                class="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-gray-900 text-white rounded-xl font-semibold hover:bg-gray-800 transition-all hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none"
+                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl font-bold hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
               >
                 <lucide-icon [img]="ShoppingCart" class="w-5 h-5"></lucide-icon>
                 <span>{{ inStock ? 'Add to Cart' : 'Out of Stock' }}</span>
               </button>
 
               <button
-                class="p-4 border-2 border-gray-300 rounded-xl hover:border-red-500 hover:bg-red-50 transition-all group"
-                title="Add to Wishlist"
+                [disabled]="!inStock"
+                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
               >
-                <lucide-icon
-                  [img]="Heart"
-                  class="w-5 h-5 text-gray-600 group-hover:text-red-500"
-                ></lucide-icon>
+                <span>Buy Now</span>
               </button>
             </div>
-          </div>
 
-          <!-- Additional Info Icons -->
-          <div class="mt-8 pt-8 border-t border-gray-200">
-            <div class="grid grid-cols-2 gap-4">
-              <div class="flex items-start gap-3 p-4 bg-blue-50 rounded-lg">
-                <lucide-icon
-                  [img]="Truck"
-                  class="w-5 h-5 text-blue-600 mt-0.5 shrink-0"
-                ></lucide-icon>
-                <div>
-                  <p class="text-sm font-semibold text-gray-900">Free Shipping</p>
-                  <p class="text-xs text-gray-600 mt-0.5">On orders over $100</p>
+            <!-- Additional Info Icons -->
+            <div class="pt-6 border-t border-gray-100">
+              <div class="grid grid-cols-2 gap-4">
+                <div
+                  class="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm"
+                >
+                  <lucide-icon [img]="Truck" class="w-5 h-5 text-blue-600 shrink-0"></lucide-icon>
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">Free Shipping</p>
+                    <p class="text-xs text-gray-600">On orders over $100</p>
+                  </div>
                 </div>
-              </div>
-              <div class="flex items-start gap-3 p-4 bg-green-50 rounded-lg">
-                <lucide-icon
-                  [img]="RotateCcw"
-                  class="w-5 h-5 text-green-600 mt-0.5 shrink-0"
-                ></lucide-icon>
-                <div>
-                  <p class="text-sm font-semibold text-gray-900">Easy Returns</p>
-                  <p class="text-xs text-gray-600 mt-0.5">30-day return policy</p>
+                <div
+                  class="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl shadow-sm"
+                >
+                  <lucide-icon
+                    [img]="RotateCcw"
+                    class="w-5 h-5 text-green-600 shrink-0"
+                  ></lucide-icon>
+                  <div>
+                    <p class="text-sm font-bold text-gray-900">Easy Returns</p>
+                    <p class="text-xs text-gray-600">30-day policy</p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ratings and Reviews Section -->
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+    <!-- Ratings Overview -->
+    <div class="p-8 lg:p-10 border-b border-gray-100">
+      <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
+        <lucide-icon [img]="Star" class="w-8 h-8 text-yellow-500"></lucide-icon>
+        Customer Ratings & Reviews
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Rating Summary -->
+        <div
+          class="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg"
+        >
+          <div
+            class="text-6xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-3"
+          >
+            4.8
+          </div>
+          <div class="flex gap-1 mb-3">
+            <span *ngFor="let i of [1, 2, 3, 4, 5]" class="text-2xl">{{
+              i <= 4 ? '⭐' : '☆'
+            }}</span>
+          </div>
+          <p class="text-lg font-semibold text-gray-700">Based on 128 reviews</p>
+        </div>
+
+        <!-- Rating Bars -->
+        <div class="md:col-span-2 space-y-4">
+          <div *ngFor="let rating of [5, 4, 3, 2, 1]" class="flex items-center gap-4">
+            <span class="text-base font-semibold text-gray-800 w-12 flex items-center gap-1"
+              >{{ rating }} <span class="text-yellow-500">⭐</span></span
+            >
+            <div class="flex-1 bg-gray-200 rounded-full h-3 shadow-inner">
+              <div
+                class="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full shadow-md transition-all duration-300"
+                [style.width.%]="
+                  rating === 5 ? 85 : rating === 4 ? 65 : rating === 3 ? 35 : rating === 2 ? 15 : 5
+                "
+              ></div>
+            </div>
+            <span class="text-base font-semibold text-gray-600 w-12 text-right">{{
+              rating === 5
+                ? '85%'
+                : rating === 4
+                ? '65%'
+                : rating === 3
+                ? '35%'
+                : rating === 2
+                ? '15%'
+                : '5%'
+            }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reviews List -->
+    <div class="p-8 lg:p-10">
+      <h3 class="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
+        <lucide-icon [img]="MessageCircle" class="w-6 h-6 text-gray-600"></lucide-icon>
+        What Our Customers Say
+      </h3>
+
+      <div class="space-y-8">
+        <!-- Review Item -->
+        <div
+          *ngFor="let review of [1, 2, 3]; let i = index"
+          class="pb-8 border-b border-gray-100 last:border-b-0 group"
+        >
+          <div class="flex justify-between items-start mb-4">
+            <div>
+              <p class="font-bold text-xl text-gray-900">Customer {{ i + 1 }}</p>
+              <p class="text-sm text-gray-500 flex items-center gap-1">
+                Verified Purchase • <span class="text-yellow-500">⭐⭐⭐⭐⭐</span>
+                {{ 3 - i }} weeks ago
+              </p>
+            </div>
+            <div class="flex gap-0.5">
+              <span
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="text-lg group-hover:text-yellow-500 transition-colors duration-200"
+                >{{ star <= 5 ? '⭐' : '☆' }}</span
+              >
+            </div>
+          </div>
+          <p class="font-semibold text-gray-900 text-lg mb-3">Timeless elegance in every detail!</p>
+          <p class="text-gray-700 text-base leading-relaxed mb-4 italic bg-gray-50 p-4 rounded-xl">
+            The craftsmanship is outstanding—solid wood with a flawless finish. It arrived swiftly
+            and transformed our space. A true heirloom piece!
+          </p>
+          <div class="flex gap-6 text-sm">
+            <button
+              class="flex items-center gap-1 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+            >
+              👍 Helpful ({{ 12 + i * 5 }})
+            </button>
+            <button
+              class="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              👎 Not Helpful ({{ 1 + i }})
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Load More Button -->
+      <div class="mt-12 text-center">
+        <button
+          class="px-8 py-3 border-2 border-gray-300 rounded-2xl text-gray-900 font-bold hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 shadow-md hover:shadow-lg"
+        >
+          Load More Reviews
+        </button>
       </div>
     </div>
   </div>

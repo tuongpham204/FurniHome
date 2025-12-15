@@ -1,12 +1,8 @@
 <div class="flex h-screen bg-gray-50">
-  <div
-    class="w-1/2 flex flex-col justify-center items-center  h-screen overflow-y-auto"
-  >
+  <div class="w-1/2 flex flex-col justify-center items-center h-screen overflow-y-auto">
     <div class="w-full max-w-md px-8">
       <div class="text-center mb-6">
-        <h1
-          class="text-4xl font-bold bg-black bg-clip-text text-transparent"
-        >
+        <h1 class="text-4xl font-bold bg-black bg-clip-text text-transparent">
           Create Account
         </h1>
         <p class="text-sm text-gray-500 mt-2">
@@ -14,110 +10,110 @@
         </p>
       </div>
 
-      <div class="space-y-3">
+      <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="space-y-3">
+        <!-- Full Name -->
         <div>
-          <label
-            for="fullname"
-            class="block text-xs font-semibold text-gray-700 mb-1"
-          >
+          <label for="fullname" class="block text-xs font-semibold text-gray-700 mb-1">
             Full Name
           </label>
           <input
             id="fullname"
             type="text"
-            required
+            formControlName="fullname"
             placeholder="John Doe"
-            class="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+            [class]="'w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 ' + 
+                     (signupForm.get('fullname')?.invalid && signupForm.get('fullname')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="fullnameError" class="text-red-500 text-xs mt-1">{{ fullnameError }}</p>
         </div>
 
+        <!-- Email -->
         <div>
-          <label
-            for="email"
-            class="block text-xs font-semibold text-gray-700 mb-1"
-          >
+          <label for="email" class="block text-xs font-semibold text-gray-700 mb-1">
             Email
           </label>
           <input
             id="email"
             type="email"
-            required
+            formControlName="email"
             placeholder="you@example.com"
-            class="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+            [class]="'w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 ' + 
+                     (signupForm.get('email')?.invalid && signupForm.get('email')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="emailError" class="text-red-500 text-xs mt-1">{{ emailError }}</p>
         </div>
 
+        <!-- Password -->
         <div>
-          <label
-            for="password"
-            class="block text-xs font-semibold text-gray-700 mb-1"
-          >
+          <label for="password" class="block text-xs font-semibold text-gray-700 mb-1">
             Password
           </label>
           <input
             id="password"
             type="password"
-            required
+            formControlName="password"
             placeholder="Create a strong password"
-            class="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+            [class]="'w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 ' + 
+                     (signupForm.get('password')?.invalid && signupForm.get('password')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="passwordError" class="text-red-500 text-xs mt-1">{{ passwordError }}</p>
         </div>
 
+        <!-- Confirm Password -->
         <div>
-          <label
-            for="confirm-password"
-            class="block text-xs font-semibold text-gray-700 mb-1"
-          >
+          <label for="confirm-password" class="block text-xs font-semibold text-gray-700 mb-1">
             Confirm Password
           </label>
           <input
             id="confirm-password"
             type="password"
-            required
+            formControlName="confirmPassword"
             placeholder="Re-enter your password"
-            class="w-full border-2 border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200"
+            [class]="'w-full border-2 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent transition-all duration-200 ' + 
+                     (signupForm.get('confirmPassword')?.invalid && signupForm.get('confirmPassword')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="confirmPasswordError" class="text-red-500 text-xs mt-1">{{ confirmPasswordError }}</p>
         </div>
 
+        <!-- Terms Checkbox -->
         <div class="flex items-start pt-1">
           <input
             type="checkbox"
             id="terms"
-            required
-            class="mt-1 h-4 w-4 text-cyan-600 border-gray-300 rounded focus:ring-cyan-500 cursor-pointer"
+            formControlName="terms"
+            [class]="'mt-1 h-4 w-4 text-cyan-600 rounded focus:ring-cyan-500 cursor-pointer ' + 
+                     (signupForm.get('terms')?.invalid && signupForm.get('terms')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
           <label for="terms" class="ml-2 text-xs text-gray-600 leading-relaxed">
             I agree to the
-            <a
-              href="#"
-              class="text-cyan-600 hover:text-cyan-700 font-medium hover:underline"
-              >Terms</a
-            >
+            <a href="#" class="text-cyan-600 hover:text-cyan-700 font-medium hover:underline">Terms</a>
             and
-            <a
-              href="#"
-              class="text-cyan-600 hover:text-cyan-700 font-medium hover:underline"
-              >Privacy Policy</a
-            >
+            <a href="#" class="text-cyan-600 hover:text-cyan-700 font-medium hover:underline">Privacy Policy</a>
           </label>
         </div>
+        <p *ngIf="termsError" class="text-red-500 text-xs">{{ termsError }}</p>
 
+        <!-- Submit Button -->
         <button
           type="submit"
-          onclick="alert('Account created successfully!')"
-          class="w-full bg-gradient-to-r from-cyan-500 to-cyan-600 text-white font-semibold py-2.5 rounded-lg hover:from-cyan-600 hover:to-cyan-700 shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 mt-2"
+          [disabled]="signupForm.invalid"
+          [class]="'w-full font-semibold py-2.5 rounded-lg shadow-md hover:shadow-lg transform hover:scale-[1.02] transition-all duration-200 mt-2 ' + 
+                   (signupForm.invalid ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-gradient-to-r from-cyan-500 to-cyan-600 text-white hover:from-cyan-600 hover:to-cyan-700')"
         >
           Create Account
         </button>
 
+        <!-- Divider -->
         <div class="flex items-center justify-center space-x-3 py-2">
           <span class="h-px w-16 bg-gray-300"></span>
           <span class="text-xs text-gray-500 font-medium">or sign up with</span>
           <span class="h-px w-16 bg-gray-300"></span>
         </div>
 
+        <!-- OAuth Buttons -->
         <div class="flex gap-3">
           <button
+            type="button"
             class="flex-1 flex items-center justify-center gap-2 border-2 border-gray-300 rounded-lg py-2 text-sm font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
           >
             <svg class="w-5 h-5" viewBox="0 0 24 24">
@@ -141,13 +137,10 @@
             Google
           </button>
           <button
+            type="button"
             class="flex-1 flex items-center justify-center gap-2 border-2 border-gray-300 rounded-lg py-2 text-sm font-medium hover:bg-gray-50 hover:border-gray-400 transition-all duration-200"
           >
-            <svg
-              class="w-5 h-5 text-blue-600"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
+            <svg class="w-5 h-5 text-blue-600" fill="currentColor" viewBox="0 0 24 24">
               <path
                 d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"
               />
@@ -156,20 +149,22 @@
           </button>
         </div>
 
+        <!-- Sign In Link -->
         <p class="text-center text-sm text-gray-600 pt-2">
           Already have an account?
-          <button
-            [routerLink]="['/login']"
-            class="text-cyan-600 font-semibold hover:text-cyan-700 hover:underline"
-            >Sign in</button
-          >
+          <a [routerLink]="['/login']" class="text-cyan-600 font-semibold hover:text-cyan-700 hover:underline cursor-pointer">
+            Sign in
+          </a>
         </p>
-      </div>
+      </form>
     </div>
   </div>
-<div class="w-1/2 h-full p-4">
+
+  <!-- Right Image -->
+  <div class="w-1/2 h-full p-4">
     <img
       src="https://i.pinimg.com/1200x/e6/8c/87/e68c8787c55485920b5db5193b10b909.jpg"
+      alt="Signup background"
       class="w-full h-full object-cover rounded-xl shadow-lg"
     />
   </div>

@@ -19,5 +19,11 @@ export const routes: Routes = [
   { path: 'cart', loadComponent: () => import('./pages/cart/cart').then((m) => m.Cart) },
   { 
     path: 'aboutus', loadComponent: () => import('./shared/about-us/about-us').then((m) => m.AboutUs)
-  }
+  },
+  { 
+    path: 'contactus', loadComponent: () => import('./shared/contact/contact').then((m) => m.Contact)
+  },
+  { 
+    path: 'wishlist', loadComponent: () => import('./pages/wishlist/wishlist').then((m) => m.Wishlist)
+  },
 ];

@@ -21,7 +21,6 @@
       </div>
       <p class="mt-4 font-semibold text-gray-900">Failed to Load</p>
       <p class="text-gray-600 text-sm mb-4">{{ error }}</p>
-      
     </div>
 
     <!-- No Data -->
@@ -29,82 +28,84 @@
       <p class="text-gray-600">No categories available</p>
     </div>
 
-    <!-- Carousel -->
+    <!-- Carousel Wrapper -->
     <div *ngIf="!loading && !error && categories.length > 0" class="relative">
-      <!-- Prev -->
-      <button
-        *ngIf="categories.length > itemsPerSlide"
-        (click)="prevSlide()"
-        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-[10px] z-10 w-10 h-10 rounded-full bg-white/90 border border-gray-200 shadow-md flex items-center justify-center hover:bg-gray-50 transition"
-      >
-        <lucide-icon [img]="ChevronLeft" class="w-5 h-5 text-gray-700"></lucide-icon>
-      </button>
-
-      <!-- Wrapper -->
-      <div class="overflow-hidden">
-        <div
-          class="flex transition-transform duration-200 ease-in-out gap-6"
-          [style.transform]="getTransformStyle()"
+      <div class="flex items-center gap-6">
+        <!-- Prev Button -->
+        <button
+          *ngIf="categories.length > itemsPerSlide"
+          (click)="prevSlide()"
+          class="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center hover:bg-gray-50 transition shrink-0 z-10"
         >
-          <!-- Category Item -->
-          <div
-            *ngFor="let category of categories"
-            [style.flex]="
-              '0 0 calc((100% - ' + (itemsPerSlide - 1) * 24 + 'px) / ' + itemsPerSlide + ')'
-            "
-          >
-            <div
-              (click)="selectCategory(category)"
-              class="flex flex-col items-center cursor-pointer group select-none"
-            >
-              <div class="relative w-full aspect-square max-w-[150px]">
-                <!-- Image Circle Background -->
-                <div
-                  class="absolute inset-0 rounded-full bg-gray-100 group-hover:bg-gray-200 transition-all duration-300"
-                ></div>
-                <!-- Category Image -->
-                <div class="absolute inset-0 overflow-hidden rounded-full">
-                  <img
-                    [src]="category.image"
-                    [alt]="category.name"
-                    loading="lazy"
-                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                    (error)="$event.target.src = 'assets/images/categories/default.png'"
-                  />
-                </div>
-              </div>
+          <lucide-icon [img]="ChevronLeft" class="w-5 h-5 text-gray-700"></lucide-icon>
+        </button>
 
-              <p
-                class="mt-3 text-sm font-semibold text-gray-700 group-hover:text-orange-600 text-center"
+        <!-- Carousel Container -->
+        <div class="overflow-hidden flex-1">
+          <div class="flex gap-6">
+            <!-- Category Item -->
+            <div
+              *ngFor="let category of getVisibleCategories()"
+              [style.flex]="
+                '0 0 calc((100% - ' + (itemsPerSlide - 1) * 24 + 'px) / ' + itemsPerSlide + ')'
+              "
+            >
+              <div
+                (click)="selectCategory(category)"
+                class="flex flex-col items-center cursor-pointer group select-none"
               >
-                {{ category.name }}
-              </p>
+                <!-- Image -->
+                <div class="relative w-full aspect-square max-w-[150px]">
+                  <!-- Background -->
+                  <div
+                    class="absolute inset-0 rounded-full bg-gray-100 group-hover:bg-gray-200 transition-all duration-300"
+                  ></div>
+
+                  <!-- Image -->
+                  <div class="absolute inset-0 overflow-hidden rounded-full">
+                    <img
+                      [src]="category.image"
+                      [alt]="category.name"
+                      loading="lazy"
+                      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                      (error)="$event.target.src = 'assets/images/categories/default.png'"
+                    />
+                  </div>
+                </div>
+
+                <!-- Name -->
+                <p
+                  class="mt-3 text-sm font-semibold text-gray-700 group-hover:text-orange-600 text-center"
+                >
+                  {{ category.name }}
+                </p>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Next Button -->
+        <button
+          *ngIf="categories.length > itemsPerSlide"
+          (click)="nextSlide()"
+          class="w-10 h-10 rounded-full bg-white border border-gray-200 shadow-md flex items-center justify-center hover:bg-gray-50 transition shrink-0 z-10"
+        >
+          <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-700"></lucide-icon>
+        </button>
       </div>
 
-      <!-- Next -->
-      <button
-        *ngIf="categories.length > itemsPerSlide"
-        (click)="nextSlide()"
-        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2.5 z-10 w-10 h-10  rounded-full bg-white/90 border border-gray-200 shadow-md flex items-center justify-center hover:bg-gray-50 transition"
-      >
-        <lucide-icon [img]="ChevronRight" class="w-5 h-5 text-gray-700"></lucide-icon>
-      </button>
-    </div>
-
-    <!-- Indicators -->
-    <div *ngIf="getNumSlides() > 1" class="flex justify-center gap-2 mt-6">
-      <button
-        *ngFor="let slide of getSlideIndicators(); let i = index"
-        (click)="goToSlide(i)"
-        class="h-2 rounded-full transition-all duration-300"
-        [class.bg-orange-500]="i === currentSlide"
-        [class.bg-gray-300]="i !== currentSlide"
-        [class.w-6]="i === currentSlide"
-        [class.w-2]="i !== currentSlide"
-      ></button>
+      <!-- Indicators -->
+      <div *ngIf="getNumSlides() > 1" class="flex justify-center gap-2 mt-6">
+        <button
+          *ngFor="let slide of getSlideIndicators(); let i = index"
+          (click)="goToSlide(i)"
+          class="h-2 rounded-full transition-all duration-300"
+          [class.bg-orange-500]="i === currentSlide"
+          [class.bg-gray-300]="i !== currentSlide"
+          [class.w-6]="i === currentSlide"
+          [class.w-2]="i !== currentSlide"
+        ></button>
+      </div>
     </div>
   </div>
 </div>

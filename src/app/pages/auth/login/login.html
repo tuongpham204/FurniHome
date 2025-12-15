@@ -10,7 +10,7 @@
       </div>
 
       <!-- Form -->
-      <div class="space-y-4">
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
 
         <!-- Email -->
         <div>
@@ -18,10 +18,12 @@
           <input
             id="email"
             type="email"
+            formControlName="email"
             placeholder="you@example.com"
-            class="mt-1 w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5
-                   text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+            [class]="'mt-1 w-full bg-white border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ' + 
+                     (loginForm.get('email')?.invalid && loginForm.get('email')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="emailError" class="text-red-500 text-xs mt-1">{{ emailError }}</p>
         </div>
 
         <!-- Password -->
@@ -30,16 +32,22 @@
           <input
             id="password"
             type="password"
+            formControlName="password"
             placeholder="Enter your password"
-            class="mt-1 w-full bg-white border border-gray-300 rounded-lg px-4 py-2.5
-                   text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500"
+            [class]="'mt-1 w-full bg-white border rounded-lg px-4 py-2.5 text-sm focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 ' + 
+                     (loginForm.get('password')?.invalid && loginForm.get('password')?.touched ? 'border-red-500' : 'border-gray-300')"
           />
+          <p *ngIf="passwordError" class="text-red-500 text-xs mt-1">{{ passwordError }}</p>
         </div>
 
         <!-- Remember + Forgot -->
         <div class="flex justify-between items-center">
           <label class="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
-            <input type="checkbox" class="rounded border-gray-300 text-cyan-600 focus:ring-cyan-500">
+            <input 
+              type="checkbox" 
+              [(ngModel)]="rememberMe"
+              [ngModelOptions]="{standalone: true}"
+              class="rounded border-gray-300 text-cyan-600 focus:ring-cyan-500">
             Remember me
           </label>
 
@@ -50,8 +58,10 @@
 
         <!-- Login Button -->
         <button
-          class="w-full bg-cyan-600 text-white py-3 rounded-lg text-sm font-semibold
-                 hover:bg-cyan-700 transition-all shadow-sm">
+          type="submit"
+          [disabled]="loginForm.invalid"
+          [class]="'w-full py-3 rounded-lg text-sm font-semibold transition-all shadow-sm ' + 
+                   (loginForm.invalid ? 'bg-gray-400 text-gray-200 cursor-not-allowed' : 'bg-cyan-600 text-white hover:bg-cyan-700')">
           Sign In
         </button>
 
@@ -65,16 +75,18 @@
         <!-- OAuth buttons -->
         <div class="flex gap-3">
           <button
+            type="button"
             class="flex-1 flex items-center justify-center gap-2 border border-gray-300
                    rounded-lg py-2.5 bg-white hover:bg-gray-100 transition text-sm font-medium">
-            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5" alt="Google">
             Google
           </button>
 
           <button
+            type="button"
             class="flex-1 flex items-center justify-center gap-2 border border-gray-300
                    rounded-lg py-2.5 bg-white hover:bg-gray-100 transition text-sm font-medium">
-            <img src="https://www.svgrepo.com/show/448224/facebook.svg" class="w-5 h-5">
+            <img src="https://www.svgrepo.com/show/448224/facebook.svg" class="w-5 h-5" alt="Facebook">
             Facebook
           </button>
         </div>
@@ -86,7 +98,7 @@
             Create account
           </a>
         </p>
-      </div>
+      </form>
     </div>
   </div>
 
@@ -94,6 +106,7 @@
   <div class="w-1/2 h-full p-4">
     <img
       src="https://i.pinimg.com/1200x/e6/8c/87/e68c8787c55485920b5db5193b10b909.jpg"
+      alt="Login background"
       class="w-full h-full object-cover rounded-xl shadow-lg"
     />
   </div>

@@ -2,9 +2,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../models/product.model';
-import { LucideAngularModule, Flame, TreeDeciduous, ShoppingCart } from 'lucide-angular';
+import { LucideAngularModule, Flame, TreeDeciduous, ShoppingCart, Heart } from 'lucide-angular';
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../service/cart.service';
+import { WishlistService } from '../../service/wishlist.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -16,12 +17,16 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class ProductCard implements OnInit {
   @Input() product!: Product;
 
-  readonly Flame = Flame;
-  readonly TreeDeciduous = TreeDeciduous;
-  readonly ShoppingCart = ShoppingCart;
+  Flame = Flame;
+  TreeDeciduous = TreeDeciduous;
+  ShoppingCart = ShoppingCart;
+  Heart = Heart;
 
-  // ✅ Inject CartService vào constructor
-  constructor(private cartService: CartService, private snackBar: MatSnackBar) {}
+  constructor(
+    private cartService: CartService,
+    private wishlistService: WishlistService,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit(): void {
     console.log('🎴 ProductCard loaded with product:', this.product);
@@ -62,5 +67,38 @@ export class ProductCard implements OnInit {
       verticalPosition: 'top',
       panelClass: ['toast-success'],
     });
+  }
+
+  // Toggle Wishlist - Sử dụng logic từ service
+  toggleWishlist(product: Product, event?: Event): void {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+
+    const isCurrentlyInWishlist = this.isInWishlist;
+
+    if (isCurrentlyInWishlist) {
+      this.wishlistService.removeFromWishlist(product.id);
+      this.snackBar.open(`${product.name} removed from wishlist!`, 'Close', {
+        duration: 2500,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['toast-warning'],
+      });
+    } else {
+      this.wishlistService.addToWishlist(product);
+      this.snackBar.open(`${product.name} added to wishlist!`, 'Close', {
+        duration: 2500,
+        horizontalPosition: 'right',
+        verticalPosition: 'top',
+        panelClass: ['toast-success'],
+      });
+    }
+  }
+
+  // Getter để check wishlist
+  get isInWishlist(): boolean {
+    return this.wishlistService.isInWishlist(this.product.id);
   }
 }

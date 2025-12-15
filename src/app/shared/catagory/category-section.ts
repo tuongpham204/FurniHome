@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
 import { ProductService } from '../../service/product.service';
 import { Product } from '../../models/product.model';
-import { finalize } from 'rxjs/operators'; // Thêm import này
+import { finalize } from 'rxjs/operators';
 
 interface Category {
   name: string;
@@ -33,7 +33,11 @@ export class CategorySection implements OnInit, OnDestroy {
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
 
-  constructor(private router: Router, private productService: ProductService) {}
+  constructor(
+    private router: Router, 
+    private productService: ProductService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -55,20 +59,20 @@ export class CategorySection implements OnInit, OnDestroy {
   loadCategories(): void {
     this.loading = true;
     this.error = '';
-    console.log('Starting to load categories...'); // Debug
+    console.log('Starting to load categories...');
 
     this.productService
       .getAllProducts()
       .pipe(
         finalize(() => {
-          this.loading = false; // Force stop loading dù gì
+          this.loading = false;
+          this.cdr.detectChanges(); // Trigger change detection
           console.log('Loading finished. Categories:', this.categories.length);
         })
       )
       .subscribe({
         next: (products: Product[]) => {
-          console.log('Products loaded:', products.length); // Debug
-          // Group products by category để lấy count và first image
+          console.log('Products loaded:', products.length);
           const categoryMap = new Map<string, { count: number; firstImage: string }>();
 
           products.forEach((product) => {
@@ -78,11 +82,9 @@ export class CategorySection implements OnInit, OnDestroy {
               }
               const current = categoryMap.get(product.category)!;
               current.count++;
-              // Chỉ lấy first image, không overwrite
             }
           });
 
-          // Convert map to categories array
           this.categories = Array.from(categoryMap.entries()).map(
             ([categorySlug, { count, firstImage }]) => ({
               name: this.formatCategoryName(categorySlug),
@@ -92,22 +94,21 @@ export class CategorySection implements OnInit, OnDestroy {
             })
           );
 
-          // Sort by count (optional - hiển thị categories có nhiều sản phẩm trước)
           this.categories.sort((a, b) => b.count - a.count);
 
-          // Reset carousel sau load
           this.currentSlide = 0;
           this.updateItemsPerSlide();
         },
         error: (err) => {
-          console.error('Subscribe error:', err); // Debug
-          this.error = 'Không thể tải danh mục. Vui lòng thử lại sau.'; // Đảm bảo set error
+          console.error('Subscribe error:', err);
+          this.error = 'Không thể tải danh mục. Vui lòng thử lại sau.';
+          this.cdr.detectChanges(); // Trigger change detection for error state
         },
       });
   }
 
   /**
-   * Format category slug to display name (từ API slug)
+   * Format category slug to display name
    */
   formatCategoryName(slug: string): string {
     return slug
@@ -133,19 +134,27 @@ export class CategorySection implements OnInit, OnDestroy {
       this.itemsPerSlide = 7;
     }
     this.numSlides = this.getNumSlides();
-    // Reset slide nếu cần để tránh overflow
-    this.currentSlide = Math.min(this.currentSlide, this.numSlides - 1);
+    this.currentSlide = Math.min(this.currentSlide, Math.max(0, this.numSlides - 1));
   }
 
   /**
    * Get number of slides
    */
   getNumSlides(): number {
-    return Math.ceil(this.categories.length / this.itemsPerSlide);
+    return Math.max(1, Math.ceil(this.categories.length / this.itemsPerSlide));
   }
 
   /**
-   * Get slide indicators array (0 to numSlides-1)
+   * Get visible categories for current slide
+   */
+  getVisibleCategories(): Category[] {
+    const startIndex = this.currentSlide * this.itemsPerSlide;
+    const endIndex = startIndex + this.itemsPerSlide;
+    return this.categories.slice(startIndex, endIndex);
+  }
+
+  /**
+   * Get slide indicators array
    */
   getSlideIndicators(): number[] {
     return Array.from({ length: this.getNumSlides() }, (_, i) => i);
@@ -161,27 +170,29 @@ export class CategorySection implements OnInit, OnDestroy {
   }
 
   /**
-   * Carousel navigation - Infinite loop
+   * Carousel navigation
    */
   nextSlide(): void {
-    this.currentSlide = (this.currentSlide + 1) % this.numSlides;
+    if (this.currentSlide < this.numSlides - 1) {
+      this.currentSlide++;
+    } else {
+      this.currentSlide = 0; // Loop back to first slide
+    }
   }
 
   prevSlide(): void {
-    this.currentSlide = (this.currentSlide - 1 + this.numSlides) % this.numSlides;
+    if (this.currentSlide > 0) {
+      this.currentSlide--;
+    } else {
+      this.currentSlide = this.numSlides - 1; // Loop to last slide
+    }
   }
 
   /**
    * Go to specific slide
    */
   goToSlide(index: number): void {
-    this.currentSlide = index % this.numSlides;
+    this.currentSlide = Math.max(0, Math.min(index, this.numSlides - 1));
   }
 
-  /**
-   * Get transform style for carousel (fixed: full slide width)
-   */
-  getTransformStyle(): string {
-    return `translateX(-${this.currentSlide * 100}%)`;
-  }
 }

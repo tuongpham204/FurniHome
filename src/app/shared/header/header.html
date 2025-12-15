@@ -1,6 +1,5 @@
-<header class="w-full bg-white/95 backdrop-blur-md ">
-  <div class="flex items-center justify-between px-8 lg:px-14 py-4 ">
-  
+<header class="w-full bg-white/95 backdrop-blur-md">
+  <div class="flex items-center justify-between px-8 lg:px-14 py-4">
     <div class="flex-1">
       <button
         class="text-gray-800 font-serif text-2xl lg:text-3xl font-semibold hover:text-gray-600 transition-colors duration-300 tracking-tight"
@@ -11,9 +10,8 @@
       <p class="text-xs text-gray-400 font-light tracking-wider hidden sm:block">Modern Living</p>
     </div>
 
-    <!-- Navigation -->
     <nav class="hidden md:flex flex-1 justify-center">
-      <div class="flex space-x-8 lg:space-x-10 text-gray-600 font-medium text-lg">
+      <div class="flex space-x-8 lg:space-x-10 text-gray-600 font-medium text-base">
         <a
           class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
           [routerLink]="['/']"
@@ -32,9 +30,9 @@
             class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
           ></span>
         </a>
-        
+
         <a
-        [routerLink]="['/aboutus']"
+          [routerLink]="['/aboutus']"
           class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
         >
           About us
@@ -42,9 +40,10 @@
             class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
           ></span>
         </a>
-        
+
         <a
           class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
+          [routerLink]="['/contactus']"
         >
           Contact us
           <span
@@ -56,21 +55,16 @@
 
     <!-- Action Buttons -->
     <div class="flex-1 flex items-center justify-end space-x-4 lg:space-x-5">
-      
-      <!-- Search Button (optional) -->
-      <button
-        class="hidden sm:flex p-2 hover:bg-gray-50 rounded-full transition-all duration-200 group"
-        title="Search"
-      >
-        <lucide-icon [img]="search" class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"></lucide-icon>
-      </button>
-
       <!-- Favorites -->
       <button
         class="relative p-2 hover:bg-gray-50 rounded-full transition-all duration-200 group"
         title="Favorites"
+        [routerLink]="['/wishlist']"
       >
-        <lucide-icon [img]="heart" class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"></lucide-icon>
+        <lucide-icon
+          [img]="heart"
+          class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"
+        ></lucide-icon>
       </button>
 
       <button
@@ -78,10 +72,14 @@
         title="Shopping bag"
         [routerLink]="['/cart']"
       >
-        <lucide-icon [img]="shoppingBag" class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"></lucide-icon>
+        <lucide-icon
+          [img]="shoppingBag"
+          class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"
+        ></lucide-icon>
         <span
           class="absolute -top-0.5 -right-0.5 bg-gray-900 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-medium text-[10px]"
-        >0</span>
+          >0</span
+        >
       </button>
 
       <!-- Divider -->
@@ -90,14 +88,14 @@
       <!-- Auth Buttons -->
       <div class="hidden lg:flex items-center space-x-3">
         <button
-          class="px-4 py-1.5 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200"
+          class="px-4 py-1.5 text-base font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 cursor-pointer"
           [routerLink]="['/login']"
         >
           Login
         </button>
 
         <button
-          class="px-5 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm"
+          class="px-5 py-2 text-base font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm cursor-pointer"
           [routerLink]="['/signup']"
         >
           Sign Up
@@ -123,6 +121,4 @@
       </button>
     </div>
   </div>
-
-  
 </header>

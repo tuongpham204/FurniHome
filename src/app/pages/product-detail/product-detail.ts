@@ -13,6 +13,8 @@ import {
   Heart,
   Truck,
   RotateCcw,
+  Star,
+  MessageCircle,
 } from 'lucide-angular';
 
 @Component({
@@ -34,6 +36,8 @@ export class ProductDetail implements OnInit {
   Heart = Heart;
   Truck = Truck;
   RotateCcw = RotateCcw;
+  Star = Star;
+  MessageCircle = MessageCircle;
 
   constructor(
     private route: ActivatedRoute,
