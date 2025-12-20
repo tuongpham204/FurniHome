@@ -1,281 +1,143 @@
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<!-- Loading Cart -->
+<div *ngIf="loadingCart" class="max-w-7xl mx-auto px-4 py-20 text-center">
+  <i class="fas fa-spinner fa-spin text-4xl text-indigo-600 mb-4"></i>
+  <p class="text-gray-500">Loading your cart...</p>
+</div>
+
+<!-- Cart Content -->
+<div *ngIf="!loadingCart" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- LEFT -->
     <div class="lg:col-span-2">
-      <div class="mb-6">
-        <div class="flex flex-row justify-between">
-          <h1 class="text-3xl font-bold text-gray-900 mb-2">Your Shopping Cart</h1>
-          <button
-            routerLink="/products"
-            class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
-          >
-            Continue shopping
-          </button>
-        </div>
-        <p class="text-gray-500">Make sure everything looks right before checkout.</p>
+      <div class="mb-6 flex justify-between items-center">
+        <h1 class="text-3xl font-bold text-gray-900">Your Shopping Cart</h1>
+        <button
+          routerLink="/products"
+          class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition"
+        >
+          Continue shopping
+        </button>
       </div>
 
-      <!-- Empty Cart Message -->
-      <div *ngIf="cartItems.length === 0" class="bg-white rounded-2xl shadow-sm p-12 text-center">
+      <!-- Empty -->
+      <div *ngIf="cartItems.length === 0" class="bg-white p-12 rounded-2xl text-center">
         <i class="fas fa-shopping-cart text-6xl text-gray-300 mb-4"></i>
-        <h2 class="text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-        <p class="text-gray-500 mb-6">Looks like you haven't added anything to your cart yet.</p>
+        <h2 class="text-xl font-bold">Your cart is empty</h2>
       </div>
 
-      <!-- Cart Items Container -->
-      <div
-        *ngIf="cartItems.length > 0"
-        class="bg-linear-to-br from-indigo-100 via-blue-100 to-purple-50/40 rounded-2xl border border-gray-300 p-6 space-y-6"
-      >
-        <!-- Loop through cart items with *ngFor -->
+      <!-- Items -->
+      <div *ngIf="cartItems.length > 0" class="space-y-6">
         <div
           *ngFor="let item of cartItems; let last = last"
-          [class.border-b-1]="!last"
-          [class.border-gray-300]="!last"
-          [class.pb-6]="!last"
-          class="flex items-start space-x-4"
+          class="flex space-x-4 pb-6"
+          [class.border-b]="!last"
         >
-          <!-- Product Image -->
-          <div class="w-24 h-24 bg-gray-100 rounded-xl shrink-0 overflow-hidden">
-            <img [src]="item.image_path" [alt]="item.name" class="w-full h-full object-cover" />
-          </div>
+          <img
+            [src]="item.image_path"
+            class="w-24 h-24 rounded-xl object-cover"
+          />
 
           <div class="flex-1">
-            <!-- Product Name and Original Price -->
-            <div class="flex justify-between items-start mb-1">
-              <div>
-                <h3 class="font-semibold text-gray-900 text-lg">{{ item.name }}</h3>
-                <p class="text-sm text-gray-500">{{ item.wood_type }} · {{ item.finish }}</p>
-              </div>
-              <span class="text-gray-500 font-medium">${{ item.price }}</span>
+            <div class="flex justify-between">
+              <h3 class="font-semibold">{{ item.name }}</h3>
+              <span>${{ item.price }}</span>
             </div>
 
-            <!-- Quantity Controls and Total -->
-            <div class="flex items-center justify-between mt-4">
+            <div class="flex justify-between items-center mt-4">
               <div class="flex items-center space-x-3">
-                <!-- Decrease Quantity -->
                 <button
                   (click)="decreaseQuantity(item.id)"
-                  class="w-8 h-8 border border-gray-400 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                  class="w-8 h-8 border rounded-lg"
                 >
-                  <lucide-icon [img]="Minus" class="w-4 h-4"></lucide-icon>
+                  <i  class="fas fa-spinner fa-spin"></i>
+                  <lucide-icon  [img]="Minus"></lucide-icon>
                 </button>
 
-                <!-- Quantity Display -->
-                <span class="w-8 text-center font-medium text-gray-900">{{ item.quantity }}</span>
+                <span>{{ item.quantity }}</span>
 
-                <!-- Increase Quantity -->
                 <button
-                  (click)="increaseQuantity(item.id)"
-                  class="w-8 h-8 border border-gray-400 rounded-lg flex items-center justify-center hover:bg-gray-100 transition-colors"
+                 
+                  class="w-8 h-8 border rounded-lg"
                 >
-                  <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                  <lucide-icon [img]="Plus"></lucide-icon>
                 </button>
 
-                <!-- Remove Button -->
                 <button
                   (click)="removeItem(item.id)"
-                  class="ml-14 px-4 py-2 text-sm border border-gray-400 text-gray-600 hover:text-red-600 flex items-center space-x-2 hover:bg-red-50 rounded-lg transition-colors"
+                  class="ml-6 text-sm text-red-600"
                 >
-                  <lucide-icon [img]="Trash" class="w-4 h-4"></lucide-icon>
-                  <span>Remove</span>
+                  Remove
                 </button>
               </div>
 
-              <!-- Item Total Price -->
-              <span class="text-lg font-semibold text-gray-900">
+              <span class="font-semibold">
                 ${{ getItemTotal(item).toFixed(2) }}
               </span>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Bottom Actions -->
-      <div *ngIf="cartItems.length > 0" class="flex items-center justify-between mt-6">
-        <div class="flex items-center space-x-4">
-          <button
-            (click)="clearCart()"
-            class="px-6 py-3 border border-gray-400 text-gray-700 rounded-xl font-medium hover:bg-gray-100 transition-colors"
-          >
-            Clear cart
-          </button>
-        </div>
+        <button
+          (click)="clearCart()"
+          class="px-6 py-3 border rounded-xl"
+        >
+          Clear cart
+        </button>
       </div>
     </div>
 
-    <!-- Right Section - Order Summary -->
-    <div class="lg:col-span-1">
-      <div
-        class="bg-linear-to-br from-indigo-100 via-blue-100 to-purple-50/40 rounded-2xl  border border-gray-300 p-6 sticky top-8"
-      >
-        <!-- Header -->
-        <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-300">
-          <h2 class="text-xl font-bold text-gray-900">Order summary</h2>
-          <span class="text-sm font-medium text-gray-600 bg-white px-3 py-1 rounded-full"
-            >{{ totalItems }} items</span
-          >
+    <!-- RIGHT -->
+    <div class="bg-white rounded-2xl p-6 sticky top-8">
+      <h2 class="font-bold mb-4">Order summary</h2>
+
+      <div class="space-y-2 text-sm">
+        <div class="flex justify-between">
+          <span>Subtotal</span>
+          <span>${{ subtotal.toFixed(2) }}</span>
         </div>
-
-        <!-- Price Details -->
-        <div class="space-y-3.5 mb-6">
-          <div class="flex items-center justify-between text-gray-700">
-            <div class="flex items-center space-x-2">
-              <i class="far fa-circle-dot text-sm text-gray-400"></i>
-              <span class="text-sm">Subtotal</span>
-            </div>
-            <span class="font-semibold text-gray-900">${{ subtotal.toFixed(2) }}</span>
-          </div>
-
-          <div class="flex items-center justify-between text-gray-700">
-            <div class="flex items-center space-x-2">
-              <i class="fas fa-truck text-sm text-gray-400"></i>
-              <span class="text-sm">Shipping</span>
-            </div>
-            <span
-              class="font-semibold"
-              [class.text-emerald-600]="shipping === 0"
-              [class.text-gray-900]="shipping > 0"
-            >
-              {{ shipping === 0 ? 'Free' : '$' + shipping.toFixed(2) }}
-            </span>
-          </div>
-
-          <div class="flex items-center justify-between text-gray-700">
-            <div class="flex items-center space-x-2">
-              <i class="far fa-credit-card text-sm text-gray-400"></i>
-              <span class="text-sm">Tax</span>
-            </div>
-            <span class="font-semibold text-gray-900">${{ tax.toFixed(2) }}</span>
-          </div>
-
-          <div
-            *ngIf="discount > 0"
-            class="flex items-center justify-between text-emerald-600 bg-emerald-50 -mx-2 px-2 py-2 rounded-lg"
-          >
-            <div class="flex items-center space-x-2">
-              <i class="fas fa-tag text-sm"></i>
-              <span class="text-sm font-medium">Coupon ({{ appliedCoupon }})</span>
-            </div>
-            <span class="font-semibold">- ${{ discount.toFixed(2) }}</span>
-          </div>
+        <div class="flex justify-between">
+          <span>Shipping</span>
+          <span>{{ shipping === 0 ? 'Free' : '$' + shipping }}</span>
         </div>
-
-        <!-- Total -->
-        <div
-          class="flex items-center justify-between py-4 border-t border-gray-300 mb-6 bg-white -mx-2 px-2 rounded-lg"
-        >
-          <span class="text-lg font-bold text-gray-900">Total</span>
-          <span
-            class="text-2xl font-bold bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent"
-            >${{ total.toFixed(2) }}</span
-          >
+        <div class="flex justify-between">
+          <span>Tax</span>
+          <span>${{ tax.toFixed(2) }}</span>
         </div>
-
-        <!-- Coupon Input -->
-        <div class="mb-6">
-          <div class="flex items-center space-x-2">
-            <input
-              type="text"
-              [(ngModel)]="couponCode"
-              placeholder="Enter coupon code"
-              class="flex-1 px-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none text-sm transition-all"
-            />
-            <button
-              (click)="applyCoupon()"
-              class="px-6 py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
-            >
-              Apply
-            </button>
-          </div>
-          <div
-            *ngIf="appliedCoupon"
-            class="flex items-center space-x-1 mt-2 text-sm text-emerald-600 font-medium"
-          >
-            <i class="fas fa-check-circle text-sm"></i>
-            <span>Applied {{ appliedCoupon }}</span>
-          </div>
-          <p *ngIf="!appliedCoupon" class="text-xs text-gray-500 mt-2 flex items-center">
-            <i class="fas fa-tag mr-1.5 text-slate-400"></i>
-            <span>Try: <span class="font-semibold text-slate-700">DUO10</span> for 10% off</span>
-          </p>
+        <div *ngIf="discount > 0" class="flex justify-between text-emerald-600">
+          <span>Discount</span>
+          <span>- ${{ discount.toFixed(2) }}</span>
         </div>
+      </div>
 
-        <!-- Shipping Address -->
-        <div class="mb-6 bg-white rounded-xl p-4 border border-gray-200">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center space-x-2 text-gray-900">
-              <i class="fas fa-home text-slate-600"></i>
-              <span class="font-semibold text-sm">Shipping address</span>
-            </div>
-            <button
-              class="text-sm text-slate-600 hover:text-slate-800 font-medium transition-colors"
-            >
-              Edit
-            </button>
-          </div>
+      <div class="flex justify-between font-bold text-lg mt-4">
+        <span>Total</span>
+        <span>${{ total.toFixed(2) }}</span>
+      </div>
 
-          <div class="space-y-3">
-            <input
-              type="text"
-              placeholder="Full name"
-              class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white outline-none text-sm transition-all"
-            />
-            <input
-              type="text"
-              placeholder="Street, city, ZIP"
-              class="w-full px-4 py-2.5 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:bg-white outline-none text-sm transition-all"
-            />
-            <button
-              class="w-full py-2.5 bg-indigo-600 text-white rounded-xl font-medium hover:bg-indigo-700 transition-all shadow-sm hover:shadow active:scale-[0.98]"
-            >
-              Save address
-            </button>
-          </div>
-        </div>
-
-        <!-- Payment Method -->
-        <div class="mb-6 bg-white rounded-xl p-4 border border-gray-200">
-          <h3 class="font-semibold text-gray-900 mb-3 text-sm">Payment method</h3>
-          <div class="grid grid-cols-3 gap-2">
-            <button
-              class="px-4 py-3 bg-indigo-600 text-white rounded-xl font-medium text-sm flex items-center justify-center space-x-2 hover:bg-indigo-700 transition-all shadow-sm active:scale-95"
-            >
-              <i class="far fa-credit-card"></i>
-              <span>Card</span>
-            </button>
-            <button
-              class="px-4 py-3 bg-gray-50 border border-gray-400 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-100 hover:border-gray-500 hover:text-gray-800 transition-all active:scale-95"
-            >
-              UPI
-            </button>
-            <button
-              class="px-4 py-3 bg-gray-50 border border-gray-400 text-gray-700 rounded-xl font-medium text-sm hover:bg-gray-100 hover:border-gray-500 hover:text-gray-800 transition-all active:scale-95"
-            >
-              Wallet
-            </button>
-          </div>
-        </div>
-
-        <!-- Checkout Button -->
+      <div class="mt-4 flex space-x-2">
+        <input
+          [(ngModel)]="couponCode"
+          placeholder="Coupon code"
+          class="flex-1 border px-3 py-2 rounded-lg"
+        />
         <button
-          class="w-full py-4 bg-gradient-to-r from-indigo-600 to-blue-600 text-white rounded-xl font-semibold hover:from-indigo-700 hover:to-blue-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center space-x-2 mb-4 active:scale-[0.98]"
+         
+          class="bg-indigo-600 text-white px-4 rounded-lg"
         >
-          <span>Proceed to Checkout</span>
-          <i class="fas fa-arrow-right"></i>
-        </button>
-
-        <!-- Security Badge -->
-        <div class="flex items-center justify-center space-x-2 text-xs text-gray-500 mb-4">
-          <i class="fas fa-lock text-emerald-600"></i>
-          <span>Secure checkout powered by Stripe</span>
-        </div>
-
-        <!-- Continue Shopping Link -->
-        <button
-          class="w-full text-center text-gray-600 hover:text-indigo-600 text-sm font-medium transition-colors flex items-center justify-center space-x-1"
-        >
+          <span >Apply</span>
+          <i  class="fas fa-spinner fa-spin"></i>
         </button>
       </div>
+
+      <button
+      
+        class="mt-6 w-full py-3 bg-indigo-600 text-white rounded-xl"
+      >
+        <span >Proceed to Checkout</span>
+        <span>
+          <i class="fas fa-spinner fa-spin mr-2"></i>Processing
+        </span>
+      </button>
     </div>
   </div>
 </div>

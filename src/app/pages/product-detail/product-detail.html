@@ -15,7 +15,7 @@
       <p class="text-gray-600 mb-6 leading-relaxed">{{ error }}</p>
       <button
         (click)="goBack()"
-        class="px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl"
+        class="px-8 py-3 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl"
       >
         Back to Collection
       </button>
@@ -30,7 +30,7 @@
           <!-- Discount Badge -->
           <div *ngIf="hasDiscount" class="absolute top-6 left-6 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-gradient-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
+              class="inline-flex items-center gap-1 bg-linear-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
             >
               <span>🔥</span>
               <span>-{{ discountPercentage }}% OFF</span>
@@ -39,7 +39,7 @@
 
           <div *ngIf="product.featured" class="absolute top-6 right-6 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-gradient-to-r from-yellow-400 to-orange-500 text-gray-900 px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
+              class="inline-flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 text-gray-900 px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
             >
               <span>⭐</span>
               <span>Featured</span>
@@ -87,7 +87,7 @@
           <!-- Category Tag -->
           <div class="mb-4">
             <span
-              class="inline-block px-3 py-1.5 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold uppercase tracking-wider rounded-full shadow-md"
+              class="inline-block px-3 py-1.5 bg-linear-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold uppercase tracking-wider rounded-full shadow-md"
             >
               {{ product.category }}
             </span>
@@ -247,7 +247,7 @@
               <button
                 (click)="addToCart(product)"
                 [disabled]="!inStock"
-                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white rounded-xl font-bold hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
+                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-xl font-bold hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
               >
                 <lucide-icon [img]="ShoppingCart" class="w-5 h-5"></lucide-icon>
                 <span>{{ inStock ? 'Add to Cart' : 'Out of Stock' }}</span>
@@ -255,7 +255,7 @@
 
               <button
                 [disabled]="!inStock"
-                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
+                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
               >
                 <span>Buy Now</span>
               </button>
@@ -265,7 +265,7 @@
             <div class="pt-6 border-t border-gray-100">
               <div class="grid grid-cols-2 gap-4">
                 <div
-                  class="flex items-center gap-3 p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm"
+                  class="flex items-center gap-3 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm"
                 >
                   <lucide-icon [img]="Truck" class="w-5 h-5 text-blue-600 shrink-0"></lucide-icon>
                   <div>
@@ -274,7 +274,7 @@
                   </div>
                 </div>
                 <div
-                  class="flex items-center gap-3 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl shadow-sm"
+                  class="flex items-center gap-3 p-4 bg-linear-to-r from-green-50 to-emerald-50 rounded-2xl shadow-sm"
                 >
                   <lucide-icon
                     [img]="RotateCcw"
@@ -307,10 +307,10 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <!-- Rating Summary -->
         <div
-          class="flex flex-col items-center justify-center p-8 bg-gradient-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg"
+          class="flex flex-col items-center justify-center p-8 bg-linear-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg"
         >
           <div
-            class="text-6xl font-bold bg-gradient-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-3"
+            class="text-6xl font-bold bg-linear-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-3"
           >
             4.8
           </div>
@@ -330,7 +330,7 @@
             >
             <div class="flex-1 bg-gray-200 rounded-full h-3 shadow-inner">
               <div
-                class="bg-gradient-to-r from-yellow-400 to-orange-400 h-3 rounded-full shadow-md transition-all duration-300"
+                class="bg-linear-to-r from-yellow-400 to-orange-400 h-3 rounded-full shadow-md transition-all duration-300"
                 [style.width.%]="
                   rating === 5 ? 85 : rating === 4 ? 65 : rating === 3 ? 35 : rating === 2 ? 15 : 5
                 "
@@ -404,7 +404,7 @@
       <!-- Load More Button -->
       <div class="mt-12 text-center">
         <button
-          class="px-8 py-3 border-2 border-gray-300 rounded-2xl text-gray-900 font-bold hover:bg-gradient-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 shadow-md hover:shadow-lg"
+          class="px-8 py-3 border-2 border-gray-300 rounded-2xl text-gray-900 font-bold hover:bg-linear-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 shadow-md hover:shadow-lg"
         >
           Load More Reviews
         </button>
