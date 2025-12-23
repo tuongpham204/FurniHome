@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterModule } from '@angular/router';
 import { WishlistService } from '../../service/wishlist.service';
 import { CartService } from '../../service/cart.service';
+import { ToastService } from '../../service/toast.service';
 import { Product } from '../../models/product.model';
-import { RouterModule } from '@angular/router';
-import { LucideAngularModule, Heart, ShoppingCart, Trash } from 'lucide-angular';
+import { LucideAngularModule, Trash } from 'lucide-angular';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wishlist',
@@ -12,83 +14,69 @@ import { LucideAngularModule, Heart, ShoppingCart, Trash } from 'lucide-angular'
   imports: [CommonModule, RouterModule, LucideAngularModule],
   templateUrl: './wishlist.html',
 })
-export class Wishlist implements OnInit {
+export class Wishlist implements OnInit, OnDestroy {
   wishlistItems: Product[] = [];
-  Heart = Heart;
-  ShoppingCart = ShoppingCart;
   Trash = Trash;
+  private wishlistSub!: Subscription;
 
   constructor(
     private wishlistService: WishlistService,
-    private cartService: CartService
+    private cartService: CartService,
+    private toastService: ToastService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.wishlistService.wishlistItems$.subscribe(items => {
-      this.wishlistItems = items;
-      console.log('💖 Wishlist Items:', items);
-      if (items.length > 0) {
-        console.log('📸 First item image_path:', items[0].image_path);
-        console.log('📦 First item full data:', items[0]);
-      }
-    });
+    this.wishlistSub = this.wishlistService.wishlistItems$.subscribe(
+      (items) => (this.wishlistItems = items)
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.wishlistSub?.unsubscribe();
   }
 
   removeFromWishlist(productId: string): void {
-    if (confirm('Bạn có chắc muốn xóa sản phẩm này khỏi danh sách yêu thích?')) {
-      this.wishlistService.removeFromWishlist(productId);
+    const product = this.wishlistItems.find((item) => item.id === productId);
+    this.wishlistService.removeFromWishlist(productId);
+
+    if (product) {
+      this.toastService.info(
+        `${product.name} has been removed from your wishlist`,
+        'Removed from wishlist'
+      );
     }
   }
 
   clearWishlist(): void {
-    if (confirm('Bạn có chắc muốn xóa toàn bộ danh sách yêu thích?')) {
-      this.wishlistService.clearWishlist();
-    }
+    const count = this.wishlistItems.length;
+    this.wishlistService.clearWishlist();
+
+    this.toastService.info(
+      `All ${count} ${count === 1 ? 'item has' : 'items have'} been removed from your wishlist`,
+      'Wishlist cleared'
+    );
   }
 
   addToCart(product: Product): void {
     this.cartService.addToCart(product);
-    alert('Đã thêm sản phẩm vào giỏ hàng!');
-  }
-
-  moveToCart(product: Product): void {
-    this.cartService.addToCart(product);
-    this.wishlistService.removeFromWishlist(product.id);
-    alert('Đã chuyển sản phẩm vào giỏ hàng!');
   }
 
   addAllToCart(): void {
-    if (this.wishlistItems.length === 0) return;
-    
-    if (confirm(`Bạn có chắc muốn thêm tất cả ${this.wishlistItems.length} sản phẩm vào giỏ hàng?`)) {
-      this.wishlistItems.forEach(item => {
-        this.cartService.addToCart(item);
-      });
-      alert('Đã thêm tất cả sản phẩm vào giỏ hàng!');
-    }
+    const count = this.wishlistItems.length;
+    this.wishlistItems.forEach((item) => this.cartService.addToCart(item));
+
+    this.toastService.success(
+      `All ${count} ${count === 1 ? 'item has' : 'items have'} been added to your cart`,
+      'Added to cart'
+    );
   }
 
   get totalItems(): number {
-    return this.wishlistService.getTotalItems();
+    return this.wishlistItems.length;
   }
 
   get totalValue(): number {
-    return this.wishlistItems.reduce((total, item) => total + item.price, 0);
-  }
-  onImageError(event: any): void {
-    console.error('❌ Image failed to load:', event.target.src);
-    event.target.style.display = 'none';
-    const parent = event.target.parentElement;
-    if (parent) {
-      parent.innerHTML = `
-        <div class="w-full h-full flex items-center justify-center text-gray-400">
-          <i class="fas fa-image text-4xl"></i>
-        </div>
-      `;
-    }
-  }
-
-  onImageLoad(event: any): void {
-    console.log('✅ Image loaded successfully:', event.target.src);
+    return this.wishlistItems.reduce((sum, item) => sum + item.price, 0);
   }
 }

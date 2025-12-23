@@ -5,7 +5,6 @@ import { LucideAngularModule, Flame, TreeDeciduous, ShoppingCart, Heart } from '
 import { RouterModule } from '@angular/router';
 import { CartService } from '../../service/cart.service';
 import { WishlistService } from '../../service/wishlist.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-product-card',
@@ -21,15 +20,9 @@ export class ProductCard implements OnInit {
   ShoppingCart = ShoppingCart;
   Heart = Heart;
 
-  constructor(
-    private cartService: CartService,
-    private wishlistService: WishlistService,
-    private snackBar: MatSnackBar
-  ) {}
+  constructor(private cartService: CartService, private wishlistService: WishlistService) {}
 
-  ngOnInit(): void {
-    console.log('🎴 ProductCard loaded with product:', this.product);
-  }
+  ngOnInit(): void {}
   get discountPercentage(): number {
     if (this.product.discount_price && this.product.price > this.product.discount_price) {
       return Math.round(
@@ -52,43 +45,20 @@ export class ProductCard implements OnInit {
     return this.product.category.charAt(0).toUpperCase() + this.product.category.slice(1);
   }
 
-  addToCart(product: Product): void {
+  addToCart(product: Product, event: Event) {
+    event.stopPropagation();
     this.cartService.addToCart(product);
-    this.snackBar.open(`${product.name} added to cart!`, 'Close', {
-      duration: 2500,
-      horizontalPosition: 'right',
-      verticalPosition: 'top',
-      panelClass: ['toast-success'],
-    });
   }
 
-  // Toggle Wishlist - Sử dụng logic từ service
-  toggleWishlist(product: Product, event?: Event): void {
-    if (event) {
-      event.preventDefault();
-      event.stopPropagation();
-    }
+  toggleWishlist(product: Product, event: Event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-    const isCurrentlyInWishlist = this.isInWishlist;
-
-    if (isCurrentlyInWishlist) {
-      this.wishlistService.removeFromWishlist(product.id);
-      this.snackBar.open(`${product.name} removed from wishlist!`, 'Close', {
-        duration: 2500,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['toast-warning'],
-      });
-    } else {
-      this.wishlistService.addToWishlist(product);
-      this.snackBar.open(`${product.name} added to wishlist!`, 'Close', {
-        duration: 2500,
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-        panelClass: ['toast-success'],
-      });
-    }
+    this.isInWishlist
+      ? this.wishlistService.removeFromWishlist(product.id)
+      : this.wishlistService.addToWishlist(product);
   }
+
   get isInWishlist(): boolean {
     return this.wishlistService.isInWishlist(this.product.id);
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../service/product.service';
 import { ProductCard } from '../../shared/product-card/product-card';
@@ -13,11 +13,10 @@ import { RouterLink } from '@angular/router';
 })
 export class FeatureProduct implements OnInit {
   products: Product[] = [];
-  loading: boolean = true;
-  error: string = '';
-  totalCount: number = 0;
+  loading = true;
+  error = '';
 
-  constructor(private productService: ProductService, private cdr: ChangeDetectorRef) {}
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts();
@@ -29,16 +28,12 @@ export class FeatureProduct implements OnInit {
 
     this.productService.getAllProducts().subscribe({
       next: (products: Product[]) => {
-        this.products = products.slice(0, 6); 
-        this.totalCount = products.length;
+        this.products = products.slice(0, 6);
         this.loading = false;
-        this.cdr.detectChanges();
       },
-      error: (err: Error) => {
-        this.error = 'Không thể tải sản phẩm. Vui lòng thử lại sau.';
+      error: (err) => {
+        this.error = 'Failed to load products. Please try again later.';
         this.loading = false;
-        this.cdr.detectChanges();
-        console.error('Error loading products:', err);
       },
     });
   }

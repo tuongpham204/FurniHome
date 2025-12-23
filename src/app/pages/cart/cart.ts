@@ -1,15 +1,15 @@
-// cart.component.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CartService, CartItem } from '../../service/cart.service';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { LucideAngularModule ,Minus, Plus, Trash } from 'lucide-angular';
+import { LucideAngularModule, Minus, Plus } from 'lucide-angular';
+import { ToastService } from '../../service/toast.service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule ,LucideAngularModule],
+  imports: [CommonModule, RouterModule, FormsModule, LucideAngularModule],
   templateUrl: './cart.html',
 })
 export class Cart implements OnInit {
@@ -23,17 +23,19 @@ export class Cart implements OnInit {
 
   Minus = Minus;
   Plus = Plus;
-  Trash  = Trash;
 
-  constructor(private cartService: CartService) {}
+  constructor(
+  private cartService: CartService,
+  private toastService: ToastService
+) {}
 
   ngOnInit(): void {
-  this.cartService.cartItems$.subscribe(items => {
-    this.cartItems = items;
-    this.calculateTotals();
-    this.loadingCart = false; 
-  });
-}
+    this.cartService.cartItems$.subscribe((items) => {
+      this.cartItems = items;
+      this.calculateTotals();
+      this.loadingCart = false;
+    });
+  }
 
   increaseQuantity(productId: string): void {
     this.cartService.increaseQuantity(productId);
@@ -43,13 +45,13 @@ export class Cart implements OnInit {
   }
 
   removeItem(productId: string): void {
-    if (confirm('Bạn có chắc muốn xóa sản phẩm này?')) {
-      this.cartService.removeItem(productId);
-    }
-  }
+  this.cartService.removeItem(productId);
+  this.toastService.success('Product removed from cart', 'Removed', 2500);
+}
+
 
   clearCart(): void {
-    if (confirm('Bạn có chắc muốn xóa toàn bộ giỏ hàng?')) {
+    if (confirm('Are you sure you want to clear your entire cart?')) {
       this.cartService.clearCart();
     }
   }
@@ -57,14 +59,12 @@ export class Cart implements OnInit {
   calculateTotals(): void {
     this.subtotal = this.cartService.getSubtotal();
     this.shipping = this.subtotal > 1000 ? 0 : 49;
-  
+
     this.tax = (this.subtotal - this.discount) * 0.08;
-    
+
     this.total = this.subtotal - this.discount + this.shipping + this.tax;
   }
-  get totalItems(): number {
-    return this.cartService.getTotalItems();
-  }
+
   getItemTotal(item: CartItem): number {
     return item.price * item.quantity;
   }

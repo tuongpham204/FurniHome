@@ -11,7 +11,6 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './login.html',
 })
 export class Login {
-  title = 'FurDecor';
   loginForm: FormGroup;
   rememberMe: boolean = false;
 

@@ -1,21 +1,20 @@
-// cart.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { ToastService } from './toast.service';
 
-// ✅ CartItem extends Product và thêm quantity
 export interface CartItem extends Product {
   quantity: number;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CartService {
   private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
   public cartItems$: Observable<CartItem[]> = this.cartItemsSubject.asObservable();
 
-  constructor() {
+  constructor(private toast: ToastService) {
     this.loadCartFromStorage();
   }
 
@@ -29,8 +28,10 @@ export class CartService {
 
     if (existingItem) {
       existingItem.quantity += 1;
+      this.toast.success(`${product.name} quantity increased`);
     } else {
       currentCart.push({ ...product, quantity: 1 });
+      this.toast.success(`${product.name} added to cart`);
     }
 
     this.cartItemsSubject.next([...currentCart]);
@@ -40,7 +41,7 @@ export class CartService {
   updateQuantity(productId: string, quantity: number): void {
     const currentCart = this.cartItemsSubject.value;
     const item = currentCart.find(i => i.id === productId);
-    
+
     if (item && quantity > 0) {
       item.quantity = quantity;
       this.cartItemsSubject.next([...currentCart]);
@@ -63,10 +64,11 @@ export class CartService {
   }
 
   removeItem(productId: string): void {
-    const currentCart = this.cartItemsSubject.value.filter(
-      item => item.id !== productId
+    const item = this.cartItemsSubject.value.find(i => i.id === productId);
+
+    this.cartItemsSubject.next(
+      this.cartItemsSubject.value.filter(i => i.id !== productId)
     );
-    this.cartItemsSubject.next(currentCart);
     this.saveCartToStorage();
   }
 
@@ -77,14 +79,14 @@ export class CartService {
 
   getTotalItems(): number {
     return this.cartItemsSubject.value.reduce(
-      (total, item) => total + item.quantity, 
+      (total, item) => total + item.quantity,
       0
     );
   }
 
   getSubtotal(): number {
     return this.cartItemsSubject.value.reduce(
-      (total, item) => total + (item.price * item.quantity), 
+      (total, item) => total + item.price * item.quantity,
       0
     );
   }
@@ -97,11 +99,8 @@ export class CartService {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       try {
-        const cart = JSON.parse(savedCart);
-        this.cartItemsSubject.next(cart);
-      } catch (e) {
-        console.error('Error loading cart from storage', e);
-      }
+        this.cartItemsSubject.next(JSON.parse(savedCart));
+      } catch {}
     }
   }
 }

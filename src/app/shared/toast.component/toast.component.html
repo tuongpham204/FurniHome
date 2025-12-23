@@ -1,0 +1,77 @@
+<div class="fixed top-5 right-5 z-50 space-y-3 w-[360px] max-w-[90vw]">
+  <div
+    *ngFor="let toast of toasts$ | async"
+    class="flex items-start gap-3 rounded-xl border p-4 shadow-lg backdrop-blur-sm
+           transition-all duration-300 ease-out
+           bg-white/90"
+    [ngClass]="{
+      'border-green-200': toast.type === 'success',
+      'border-red-200': toast.type === 'error',
+      'border-blue-200': toast.type === 'info'
+    }"
+  >
+    <!-- Icon -->
+    <div
+      class="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+      [ngClass]="{
+        'bg-green-100 text-green-600': toast.type === 'success',
+        'bg-red-100 text-red-600': toast.type === 'error',
+        'bg-blue-100 text-blue-600': toast.type === 'info'
+      }"
+    >
+      <!-- Success -->
+      <svg
+        *ngIf="toast.type === 'success'"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+      </svg>
+
+      <!-- Error -->
+      <svg
+        *ngIf="toast.type === 'error'"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+
+      <!-- Info -->
+      <svg
+        *ngIf="toast.type === 'info'"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01" />
+      </svg>
+    </div>
+
+    <!-- Content -->
+    <div class="flex-1">
+      <p class="text-sm font-semibold text-gray-900">
+        {{ toast.title }}
+      </p>
+      <p class="mt-0.5 text-sm text-gray-600">
+        {{ toast.message }}
+      </p>
+    </div>
+
+    <!-- Close -->
+    <button
+      class="ml-2 rounded-md p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-600 transition"
+      (click)="removeToast(toast.id)"
+    >
+      ✕
+    </button>
+  </div>
+</div>

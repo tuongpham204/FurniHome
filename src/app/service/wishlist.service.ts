@@ -1,40 +1,39 @@
-// wishlist.service.ts
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Product } from '../models/product.model';
+import { ToastService } from './toast.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WishlistService {
   private wishlistItemsSubject = new BehaviorSubject<Product[]>([]);
-  public wishlistItems$: Observable<Product[]> = this.wishlistItemsSubject.asObservable();
+  public wishlistItems$: Observable<Product[]> =
+    this.wishlistItemsSubject.asObservable();
 
-  constructor() {
+  constructor(private toast: ToastService) {
     this.loadWishlistFromStorage();
-  }
-
-  getWishlistItems(): Product[] {
-    return this.wishlistItemsSubject.value;
   }
 
   addToWishlist(product: Product): void {
     const currentWishlist = this.wishlistItemsSubject.value;
-    const existingItem = currentWishlist.find(item => item.id === product.id);
+    const exists = currentWishlist.find(item => item.id === product.id);
 
-    if (!existingItem) {
+    if (!exists) {
       currentWishlist.push(product);
       this.wishlistItemsSubject.next([...currentWishlist]);
       this.saveWishlistToStorage();
+      this.toast.success(`${product.name} added to wishlist`);
     }
   }
 
-  removeFromWishlist(productId: string): void {
-    const currentWishlist = this.wishlistItemsSubject.value.filter(
-      item => item.id !== productId
+ removeFromWishlist(productId: string): void {
+  const item = this.wishlistItemsSubject.value.find(i => i.id === productId);
+    this.wishlistItemsSubject.next(
+      this.wishlistItemsSubject.value.filter(i => i.id !== productId)
     );
-    this.wishlistItemsSubject.next(currentWishlist);
     this.saveWishlistToStorage();
+
   }
 
   clearWishlist(): void {
@@ -51,18 +50,18 @@ export class WishlistService {
   }
 
   private saveWishlistToStorage(): void {
-    localStorage.setItem('wishlist', JSON.stringify(this.wishlistItemsSubject.value));
+    localStorage.setItem(
+      'wishlist',
+      JSON.stringify(this.wishlistItemsSubject.value)
+    );
   }
 
   private loadWishlistFromStorage(): void {
     const savedWishlist = localStorage.getItem('wishlist');
     if (savedWishlist) {
       try {
-        const wishlist = JSON.parse(savedWishlist);
-        this.wishlistItemsSubject.next(wishlist);
-      } catch (e) {
-        console.error('Error loading wishlist from storage', e);
-      }
+        this.wishlistItemsSubject.next(JSON.parse(savedWishlist));
+      } catch {}
     }
   }
 }

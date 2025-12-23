@@ -1,25 +1,28 @@
-<div class="bg-stone-100 rounded-2xl p-4 overflow-hidden cursor-pointer group">
+<div class="bg-stone-100 rounded-2xl p-4 overflow-hidden group/card">
+  <!-- Image -->
   <div
-    class="w-full aspect-square bg-stone-50 overflow-hidden rounded-lg"
+    class="w-full aspect-square bg-stone-50 overflow-hidden rounded-lg cursor-pointer"
     [routerLink]="['/products', product.id]"
   >
     <img
       [src]="product.image_path"
       [alt]="product.name"
-      class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+      class="w-full h-full object-cover transition-transform duration-300 group-hover/card:scale-105"
     />
   </div>
 
-  <div class="mt-2">
-    <div class="flex flex-row justify-between items-center">
-      <p class="text-xs text-stone-500 uppercase tracking-wider mb-1.5 font-medium">
+  <div class="mt-3">
+    <!-- Category + Wishlist -->
+    <div class="flex justify-between items-center">
+      <p class="text-xs text-stone-500 uppercase tracking-wider font-medium">
         {{ product.category }}
       </p>
+
       <button
-        (click)="toggleWishlist(product, $event)"
-        class="p-2 rounded-full transition-all duration-300 hover:bg-gray-100 group active:scale-90"
-        [class.bg-red-50]="isInWishlist"
         type="button"
+        (click)="toggleWishlist(product, $event)"
+        class="p-2 rounded-full transition-all duration-300 hover:bg-gray-100 active:scale-90 group/btn"
+        [class.bg-red-50]="isInWishlist"
       >
         <lucide-icon
           [img]="Heart"
@@ -28,38 +31,41 @@
           [class.fill-red-500]="isInWishlist"
           [class.scale-110]="isInWishlist"
           [class.text-gray-400]="!isInWishlist"
-          [class.group-hover:text-red-400]="!isInWishlist"
-          [class.group-hover:scale-110]="!isInWishlist"
+          [class.group-hover/btn:text-red-400]="!isInWishlist"
         ></lucide-icon>
       </button>
     </div>
 
+    <!-- Name -->
     <h3
-      class="text-base font-semibold text-stone-800 mb-2 line-clamp-1 leading-snug group-hover:text-stone-900 transition-colors"
+      class="mt-2 text-base font-semibold text-stone-800 line-clamp-1 transition-colors group-hover/card:text-stone-900"
     >
       {{ product.name }}
     </h3>
 
-    <div class="flex items-end justify-between">
-      <div class="flex flex-col">
+    <!-- Price + Cart -->
+    <div class="mt-3 flex items-end justify-between">
+      <div>
         <span
           class="text-lg font-bold"
-          [class.text-stone-900]="!hasDiscount"
           [class.text-black]="hasDiscount"
+          [class.text-stone-900]="!hasDiscount"
         >
           ${{ displayPrice | number : '1.2-2' }}
         </span>
-        <span *ngIf="hasDiscount" class="text-sm text-stone-400 line-through">
+
+        <span *ngIf="hasDiscount" class="block text-sm text-stone-400 line-through">
           ${{ product.price | number : '1.2-2' }}
         </span>
       </div>
 
       <button
-        (click)="addToCart(product)"
-        class="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition"
+        type="button"
+        (click)="addToCart(product, $event)"
+        class="flex items-center gap-2 px-3 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg transition active:scale-95"
       >
         <lucide-icon [img]="ShoppingCart" class="w-4 h-4"></lucide-icon>
-        <span class="text-sm">Add to cart</span>
+        <span class="text-sm">Add</span>
       </button>
     </div>
   </div>

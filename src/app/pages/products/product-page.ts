@@ -1,6 +1,5 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ProductService } from '../../service/product.service';
 import { ProductCard } from '../../shared/product-card/product-card';
@@ -17,43 +16,28 @@ export class ProductPage implements OnInit {
   products: Product[] = [];
   filteredProducts: Product[] = [];
 
+  loading = true;
+  error = '';
 
-  loading: boolean = true;
-  error: string = '';
   selectedCategory: string = 'All';
   searchText: string = '';
 
- 
-  pageSize: number = 10;
-  currentPage: number = 1;
-  totalCount: number = 0;
-  totalPages: number = 0;
+
+  pageSize = 10;
+  currentPage = 1;
+  totalCount = 0;
+  totalPages = 0;
   totalPagesArray: number[] = [];
 
+ 
   readonly Search = Search;
-  categories: string[] = ['All', 'Chair', 'Table', 'Sofa', 'Bed', 'Lamp'];
-  categorySlug: string = '';
 
-  constructor(
-    private productService: ProductService,
-    private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
-  ) {}
+  categories: string[] = ['All', 'Chair', 'Table', 'Sofa', 'Bed', 'Lamp'];
+
+  constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadProducts();
-    this.route.queryParams.subscribe((params) => {
-      const slug = params['category'];
-      if (slug) {
-        this.categorySlug = slug;
-        this.selectedCategory = this.formatCategoryName(slug); 
-        this.currentPage = 1;
-        this.applyFilters(); 
-      } else {
-        this.categorySlug = '';
-        this.selectedCategory = 'All';
-      }
-    });
   }
 
   loadProducts(): void {
@@ -64,65 +48,58 @@ export class ProductPage implements OnInit {
       next: (products: Product[]) => {
         this.products = products;
         this.loading = false;
-
         this.applyFilters();
-        this.cdr.detectChanges();
       },
       error: (err: Error) => {
+        console.error(err);
         this.error = 'Unable to load products.';
         this.loading = false;
-        console.error(err);
       },
     });
   }
 
-  onCategorySelected(category: string) {
+  onCategorySelected(category: string): void {
     this.selectedCategory = category;
-    this.categorySlug = category.toLowerCase(); 
-    if (category === 'All') {
-      this.categorySlug = '';
-    }
     this.currentPage = 1;
     this.applyFilters();
   }
 
-  onSearch() {
+  onSearch(): void {
     this.currentPage = 1;
     this.applyFilters();
   }
 
-  applyFilters() {
+  applyFilters(): void {
     let result = [...this.products];
-    if (this.categorySlug) {
-      result = result.filter((p) => p.category?.toLowerCase() === this.categorySlug.toLowerCase());
+    if (this.selectedCategory !== 'All') {
+      result = result.filter(
+        (p) => p.category?.toLowerCase() === this.selectedCategory.toLowerCase()
+      );
     }
-
-    // Search filter
     if (this.searchText.trim()) {
-      result = result.filter((p) => p.name.toLowerCase().includes(this.searchText.toLowerCase()));
+      const keyword = this.searchText.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(keyword) ||
+          p.category?.toLowerCase().includes(keyword)
+      );
     }
 
     this.totalCount = result.length;
     this.generatePagination();
+
     const start = (this.currentPage - 1) * this.pageSize;
     const end = start + this.pageSize;
     this.filteredProducts = result.slice(start, end);
   }
-
-  generatePagination() {
+  generatePagination(): void {
     this.totalPages = Math.ceil(this.totalCount / this.pageSize);
     this.totalPagesArray = Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  changePage(page: number) {
+  changePage(page: number): void {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.applyFilters();
-  }
-  formatCategoryName(slug: string): string {
-    return slug
-      .split('-')
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
   }
 }

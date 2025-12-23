@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LucideAngularModule, ChevronLeft, ChevronRight } from 'lucide-angular';
@@ -31,11 +31,7 @@ export class CategorySection implements OnInit, OnDestroy {
   readonly ChevronLeft = ChevronLeft;
   readonly ChevronRight = ChevronRight;
 
-  constructor(
-    private router: Router, 
-    private productService: ProductService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  constructor(private router: Router, private productService: ProductService) {}
 
   ngOnInit(): void {
     this.loadCategories();
@@ -50,23 +46,20 @@ export class CategorySection implements OnInit, OnDestroy {
   private handleResize = (): void => {
     this.updateItemsPerSlide();
   };
+
   loadCategories(): void {
     this.loading = true;
     this.error = '';
-    console.log('Starting to load categories...');
 
     this.productService
       .getAllProducts()
       .pipe(
         finalize(() => {
           this.loading = false;
-          this.cdr.detectChanges(); 
-          console.log('Loading finished. Categories:', this.categories.length);
         })
       )
       .subscribe({
         next: (products: Product[]) => {
-          console.log('Products loaded:', products.length);
           const categoryMap = new Map<string, { count: number; firstImage: string }>();
 
           products.forEach((product) => {
@@ -94,18 +87,18 @@ export class CategorySection implements OnInit, OnDestroy {
           this.updateItemsPerSlide();
         },
         error: (err) => {
-          console.error('Subscribe error:', err);
-          this.error = 'Không thể tải danh mục. Vui lòng thử lại sau.';
-          this.cdr.detectChanges(); 
+          this.error = 'Unable to load categories. Please try again later.';
         },
       });
   }
+
   formatCategoryName(slug: string): string {
     return slug
       .split('-')
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   }
+
   updateItemsPerSlide(): void {
     const width = window.innerWidth;
     if (width < 640) {
@@ -122,14 +115,17 @@ export class CategorySection implements OnInit, OnDestroy {
     this.numSlides = this.getNumSlides();
     this.currentSlide = Math.min(this.currentSlide, Math.max(0, this.numSlides - 1));
   }
+
   getNumSlides(): number {
     return Math.max(1, Math.ceil(this.categories.length / this.itemsPerSlide));
   }
+
   getVisibleCategories(): Category[] {
     const startIndex = this.currentSlide * this.itemsPerSlide;
     const endIndex = startIndex + this.itemsPerSlide;
     return this.categories.slice(startIndex, endIndex);
   }
+
   getSlideIndicators(): number[] {
     return Array.from({ length: this.getNumSlides() }, (_, i) => i);
   }
@@ -152,11 +148,11 @@ export class CategorySection implements OnInit, OnDestroy {
     if (this.currentSlide > 0) {
       this.currentSlide--;
     } else {
-      this.currentSlide = this.numSlides - 1; 
+      this.currentSlide = this.numSlides - 1;
     }
   }
+
   goToSlide(index: number): void {
     this.currentSlide = Math.max(0, Math.min(index, this.numSlides - 1));
   }
-
 }
