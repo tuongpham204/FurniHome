@@ -1,0 +1,182 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="bg-white rounded-lg shadow-sm overflow-hidden border border-gray-200">
+    <div class="p-6 lg:p-8 border-b border-gray-200">
+      <h2 class="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+        <lucide-icon [img]="Star" class="w-6 h-6 text-amber-500"></lucide-icon>
+        Customer Reviews
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div
+          class="flex flex-col items-center justify-center p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-lg border border-amber-200"
+        >
+          <div class="text-5xl font-bold text-gray-900 mb-2">4.8</div>
+          <div class="flex gap-0.5 mb-2">
+            <span *ngFor="let i of [1, 2, 3, 4, 5]" class="text-xl text-amber-500">
+              {{ i <= 4 ? '⭐' : '☆' }}
+            </span>
+          </div>
+          <p class="text-sm font-medium text-gray-600">Based on 128 reviews</p>
+        </div>
+        <div class="md:col-span-2 space-y-2">
+          <div *ngFor="let rating of [5, 4, 3, 2, 1]" class="flex items-center gap-3">
+            <span class="text-sm font-medium text-gray-700 w-16 flex items-center gap-1">
+              {{ rating }} <span class="text-amber-500 text-xs">★</span>
+            </span>
+            <div class="flex-1 bg-gray-200 rounded-full h-2.5">
+              <div
+                class="bg-gradient-to-r from-amber-400 to-amber-500 h-2.5 rounded-full transition-all duration-300"
+                [style.width.%]="
+                  rating === 5 ? 85 : rating === 4 ? 65 : rating === 3 ? 35 : rating === 2 ? 15 : 5
+                "
+              ></div>
+            </div>
+            <span class="text-sm font-medium text-gray-600 w-12 text-right">
+              {{
+                rating === 5
+                  ? '85%'
+                  : rating === 4
+                  ? '65%'
+                  : rating === 3
+                  ? '35%'
+                  : rating === 2
+                  ? '15%'
+                  : '5%'
+              }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="p-6 lg:p-8">
+      <h3 class="text-lg font-semibold text-gray-900 mb-5">Customer Feedback</h3>
+
+      <div class="space-y-6">
+        <div class="pb-6 border-b border-gray-200">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+              >
+                JD
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Jessica Davis</p>
+                <p class="text-xs text-gray-500">Verified Purchase</p>
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <div class="flex gap-0.5 mb-1">
+                <span *ngFor="let star of [1, 2, 3, 4, 5]" class="text-sm text-amber-500">⭐</span>
+              </div>
+              <span class="text-xs text-gray-500">3 weeks ago</span>
+            </div>
+          </div>
+          <h4 class="font-medium text-gray-900 text-sm mb-2">Exceptional Craftsmanship!</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">
+            This piece exceeded my expectations. The oak finish is absolutely gorgeous and the
+            attention to detail is remarkable. It arrived well-packaged and was easy to assemble.
+            It's become the centerpiece of our living room!
+          </p>
+          <div class="flex gap-4 mt-3">
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-amber-700 transition-colors"
+            >
+              <span>👍</span> Helpful (24)
+            </button>
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <span>💬</span> Reply
+            </button>
+          </div>
+        </div>
+        <div class="pb-6 border-b border-gray-200">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-stone-400 to-stone-600 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+              >
+                MC
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Michael Chen</p>
+                <p class="text-xs text-gray-500">Verified Purchase</p>
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <div class="flex gap-0.5 mb-1">
+                <span *ngFor="let star of [1, 2, 3, 4, 5]" class="text-sm text-amber-500">⭐</span>
+              </div>
+              <span class="text-xs text-gray-500">2 months ago</span>
+            </div>
+          </div>
+          <h4 class="font-medium text-gray-900 text-sm mb-2">Worth Every Penny</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">
+            Solid construction and beautiful finish. The dimensions were perfect for our space.
+            Customer service was also excellent when I had questions about delivery. Highly
+            recommend!
+          </p>
+          <div class="flex gap-4 mt-3">
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-amber-700 transition-colors"
+            >
+              <span>👍</span> Helpful (18)
+            </button>
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <span>💬</span> Reply
+            </button>
+          </div>
+        </div>
+        <div class="pb-6 border-b border-gray-200">
+          <div class="flex items-start justify-between mb-3">
+            <div class="flex items-center gap-3">
+              <div
+                class="w-10 h-10 bg-gradient-to-br from-rose-400 to-rose-600 rounded-full flex items-center justify-center text-white font-semibold text-sm"
+              >
+                SR
+              </div>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Sarah Rodriguez</p>
+                <p class="text-xs text-gray-500">Verified Purchase</p>
+              </div>
+            </div>
+            <div class="flex flex-col items-end">
+              <div class="flex gap-0.5 mb-1">
+                <span *ngFor="let star of [1, 2, 3, 4]" class="text-sm text-amber-500">⭐</span>
+                <span class="text-sm text-gray-300">☆</span>
+              </div>
+              <span class="text-xs text-gray-500">1 month ago</span>
+            </div>
+          </div>
+          <h4 class="font-medium text-gray-900 text-sm mb-2">Beautiful But Heavy</h4>
+          <p class="text-sm text-gray-700 leading-relaxed">
+            The quality is outstanding and it looks amazing in our dining room. Lost one star
+            because it's quite heavy to move around, but that's also a testament to its solid build.
+            Overall very satisfied!
+          </p>
+          <div class="flex gap-4 mt-3">
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-amber-700 transition-colors"
+            >
+              <span>👍</span> Helpful (12)
+            </button>
+            <button
+              class="flex items-center gap-1 text-xs text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              <span>💬</span> Reply
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-6 text-center">
+        <button
+          class="px-6 py-2.5 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-all duration-300 shadow-sm hover:shadow"
+        >
+          Load More Reviews
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

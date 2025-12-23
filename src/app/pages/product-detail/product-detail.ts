@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../service/product.service';
 import { Product } from '../../models/product.model';
+import { Review } from '../../shared/review/review';
 import { CartService } from '../../service/cart.service';
 import {
   LucideAngularModule,
@@ -18,7 +19,7 @@ import {
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule],
+  imports: [CommonModule, LucideAngularModule, Review],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail implements OnInit {

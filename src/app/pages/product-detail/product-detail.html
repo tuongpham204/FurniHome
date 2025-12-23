@@ -1,261 +1,247 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div *ngIf="loading" class="flex justify-center items-center min-h-[500px]">
+<div *ngIf="loading" class="flex justify-center items-center min-h-[500px]">
     <div class="text-center">
       <div
-        class="animate-spin rounded-full h-16 w-16 border-4 border-gray-200 border-t-blue-600 mx-auto mb-4"
+        class="animate-spin rounded-full h-16 w-16 border-4 border-amber-100 border-t-amber-600 mx-auto mb-4"
       ></div>
-      <p class="text-lg font-medium text-gray-700">Discovering your perfect piece...</p>
+      <p class="text-base text-gray-600">Discovering your perfect piece...</p>
     </div>
   </div>
-
   <div *ngIf="error && !loading" class="container mx-auto px-4 py-12">
-    <div class="max-w-md mx-auto text-center bg-white rounded-2xl shadow-xl p-8">
-      <div class="text-red-400 text-6xl mb-4">⚠️</div>
-      <h2 class="text-3xl font-bold text-gray-900 mb-2">Something went wrong!</h2>
-      <p class="text-gray-600 mb-6 leading-relaxed">{{ error }}</p>
+    <div class="max-w-md mx-auto text-center bg-white rounded-lg shadow-lg p-8">
+      <div class="text-amber-400 text-5xl mb-4">⚠️</div>
+      <h2 class="text-2xl font-semibold text-gray-900 mb-2">Something went wrong!</h2>
+      <p class="text-sm text-gray-600 mb-6">{{ error }}</p>
       <button
         (click)="goBack()"
-        class="px-8 py-3 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-xl hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-xl"
+        class="px-6 py-2.5 bg-gradient-to-r from-amber-700 to-amber-800 text-white text-sm font-medium rounded-lg hover:from-amber-800 hover:to-amber-900 transition-all duration-300 shadow-md hover:shadow-lg"
       >
         Back to Collection
       </button>
     </div>
   </div>
-
-  <div *ngIf="!loading && !error && product" class="container mx-auto px-4 py-12">
-    <div class="bg-white rounded-3xl shadow-xl overflow-hidden mb-8">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-0">
-        <div class="relative bg-linear-to-br from-gray-50 to-gray-100 p-6 lg:p-10">
-          <div *ngIf="hasDiscount" class="absolute top-6 left-6 z-10">
+  <div *ngIf="!loading && !error && product" class="container mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-sm overflow-hidden mb-8">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div class="relative bg-gradient-to-br from-stone-50 to-amber-50/30 p-6 lg:p-8">
+          <div *ngIf="hasDiscount" class="absolute top-4 left-4 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-linear-to-r from-red-500 to-pink-600 text-white px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
+              class="inline-flex items-center gap-1 bg-gradient-to-r from-red-500 to-rose-600 text-white px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
             >
               <span>🔥</span>
               <span>-{{ discountPercentage }}% OFF</span>
             </span>
           </div>
-
-          <div *ngIf="product.featured" class="absolute top-6 right-6 z-10">
+          <div *ngIf="product.featured" class="absolute top-4 right-4 z-10">
             <span
-              class="inline-flex items-center gap-1 bg-linear-to-r from-yellow-400 to-orange-500 text-gray-900 px-3 py-2 rounded-full text-sm font-bold shadow-xl backdrop-blur-sm"
+              class="inline-flex items-center gap-1 bg-gradient-to-r from-amber-400 to-amber-500 text-gray-900 px-3 py-1.5 rounded-full text-xs font-semibold shadow-lg"
             >
               <span>⭐</span>
               <span>Featured</span>
             </span>
           </div>
-          <div
-            class="aspect-square rounded-2xl overflow-hidden bg-white shadow-2xl mx-auto max-w-full"
-          >
+          <div class="aspect-square rounded-lg overflow-hidden bg-white shadow-md mx-auto max-w-md">
             <img
               [src]="product.image_path"
               [alt]="product.name"
-              class="w-full h-full object-cover hover:scale-110 transition-all duration-500 ease-out"
+              class="w-full h-full object-cover hover:scale-105 transition-transform duration-500 ease-out"
             />
           </div>
-          <div class="mt-6 grid grid-cols-4 gap-2">
+
+          <div class="mt-4 grid grid-cols-4 gap-2 max-w-md mx-auto">
             <div
-              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+              class="aspect-square rounded-md bg-white border border-amber-200 overflow-hidden hover:border-amber-400 transition-colors duration-200 cursor-pointer"
             >
               <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
             <div
-              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+              class="aspect-square rounded-md bg-white border border-amber-200 overflow-hidden hover:border-amber-400 transition-colors duration-200 cursor-pointer"
             >
               <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
             <div
-              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+              class="aspect-square rounded-md bg-white border border-amber-200 overflow-hidden hover:border-amber-400 transition-colors duration-200 cursor-pointer"
             >
               <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
             <div
-              class="aspect-square rounded-xl bg-white border-2 border-blue-200 overflow-hidden hover:border-blue-400 transition-colors duration-200"
+              class="aspect-square rounded-md bg-white border border-amber-200 overflow-hidden hover:border-amber-400 transition-colors duration-200 cursor-pointer"
             >
               <img [src]="product.image_path" class="w-full h-full object-cover" />
             </div>
           </div>
         </div>
-        <div class="p-8 lg:p-10 flex flex-col">
-          <div class="mb-4">
+        <div class="p-6 lg:p-8 flex flex-col">
+          <div class="mb-3">
             <span
-              class="inline-block px-3 py-1.5 bg-linear-to-r from-blue-100 to-indigo-100 text-blue-800 text-sm font-semibold uppercase tracking-wider rounded-full shadow-md"
+              class="inline-block px-3 py-1 bg-amber-100 text-amber-800 text-xs font-medium uppercase tracking-wide rounded-full"
             >
               {{ product.category }}
             </span>
           </div>
-          <h1
-            class="text-3xl lg:text-3xl font-bold text-gray-900 mb-4 leading-tight bg-linear-to-r from-gray-900 to-gray-700 bg-clip-text"
-          >
+          <h1 class="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3 leading-snug">
             {{ product.name }}
           </h1>
-          <div class="mb-6 pb-6 border-b border-gray-100">
-            <div class="flex items-baseline gap-3 mb-2">
-              <span class="text-3xl font-bold"> ${{ displayPrice | number : '1.2-2' }} </span>
-              <span *ngIf="hasDiscount" class="text-xl text-gray-400 line-through">
+          <div class="mb-5 pb-5 border-b border-gray-200">
+            <div class="flex items-baseline gap-3 mb-1">
+              <span class="text-3xl font-bold text-gray-900">
+                ${{ displayPrice | number : '1.2-2' }}
+              </span>
+              <span *ngIf="hasDiscount" class="text-lg text-gray-400 line-through">
                 ${{ product.price | number : '1.2-2' }}
               </span>
             </div>
-            <p
-              *ngIf="hasDiscount"
-              class="text-sm px-3 py-1 rounded-full inline-flex items-center gap-1"
-            >
+            <p *ngIf="hasDiscount" class="text-sm text-green-700 font-medium">
               You save ${{ product.price - product.discount_price! | number : '1.2-2' }} ({{
                 discountPercentage
               }}%)
             </p>
           </div>
-          <div class="flex items-center gap-3 mb-6">
-            <div class="flex items-center gap-2">
-              <span
-                class="inline-block w-3 h-3 rounded-full shadow-md"
-                [ngClass]="{
-                  'bg-green-500': inStock && product.stock > 10,
-                  'bg-yellow-500': inStock && product.stock <= 10,
-                  'bg-red-500': !inStock
-                }"
-              ></span>
-              <span
-                class="text-sm font-semibold"
-                [ngClass]="{
-                  'text-green-600': inStock && product.stock > 10,
-                  'text-yellow-600': inStock && product.stock <= 10,
-                  'text-red-600': !inStock
-                }"
-              >
-                <ng-container *ngIf="inStock">
-                  {{
-                    product.stock > 10
-                      ? 'In Stock - Ready to Ship'
-                      : 'Hurry! Only ' + product.stock + ' left!'
-                  }}
-                </ng-container>
-                <ng-container *ngIf="!inStock"> Out of Stock - Notify Me </ng-container>
-              </span>
-            </div>
-          </div>
-          <div class="mb-8 pl-4 bg-blue-50 p-4 rounded-xl">
-            <h3
-              class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-3 flex items-center gap-2"
+          <div class="flex items-center gap-2 mb-5">
+            <span
+              class="inline-block w-2.5 h-2.5 rounded-full"
+              [ngClass]="{
+                'bg-green-500': inStock && product.stock > 10,
+                'bg-amber-500': inStock && product.stock <= 10,
+                'bg-red-500': !inStock
+              }"
+            ></span>
+            <span
+              class="text-sm font-medium"
+              [ngClass]="{
+                'text-green-700': inStock && product.stock > 10,
+                'text-amber-700': inStock && product.stock <= 10,
+                'text-red-700': !inStock
+              }"
             >
+              <ng-container *ngIf="inStock">
+                {{
+                  product.stock > 10
+                    ? 'In Stock - Ready to Ship'
+                    : 'Hurry! Only ' + product.stock + ' left!'
+                }}
+              </ng-container>
+              <ng-container *ngIf="!inStock">Out of Stock - Notify Me</ng-container>
+            </span>
+          </div>
+          <div class="mb-5 p-4 bg-stone-50 rounded-lg border border-stone-200">
+            <h3 class="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-2">
               Description
             </h3>
-            <p class="text-gray-700 leading-relaxed text-base">
+            <p class="text-sm text-gray-700 leading-relaxed">
               {{ product.description }}
             </p>
           </div>
-          <div class="mb-8 p-6 bg-gray-100 rounded-2xl shadow-lg">
-            <h3
-              class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4 flex items-center gap-2"
-            >
+          <div
+            class="mb-6 p-5 bg-gradient-to-br from-stone-50 to-amber-50/20 rounded-lg border border-stone-200"
+          >
+            <h3 class="text-xs font-semibold text-gray-900 uppercase tracking-wide mb-3">
               Specifications
             </h3>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
-                <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Wood Type</span>
-                <span class="text-base font-semibold text-gray-900 capitalize">{{
+            <div class="grid grid-cols-2 gap-3 mb-3">
+              <div class="flex flex-col p-2.5 bg-white rounded-md border border-stone-200">
+                <span class="text-xs text-gray-500 uppercase mb-1">Wood Type</span>
+                <span class="text-sm font-medium text-gray-900 capitalize">{{
                   product.wood_type
                 }}</span>
               </div>
-              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
-                <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Finish</span>
-                <span class="text-base font-semibold text-gray-900 capitalize">{{
+              <div class="flex flex-col p-2.5 bg-white rounded-md border border-stone-200">
+                <span class="text-xs text-gray-500 uppercase mb-1">Finish</span>
+                <span class="text-sm font-medium text-gray-900 capitalize">{{
                   product.finish
                 }}</span>
               </div>
-              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
-                <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Dimensions</span>
-                <span class="text-base font-semibold text-gray-900">
+              <div class="flex flex-col p-2.5 bg-white rounded-md border border-stone-200">
+                <span class="text-xs text-gray-500 uppercase mb-1">Dimensions</span>
+                <span class="text-sm font-medium text-gray-900">
                   {{ product.dimensions.width }}" × {{ product.dimensions.depth }}" ×
                   {{ product.dimensions.height }}"
                 </span>
               </div>
-              <div class="flex flex-col p-3 bg-white rounded-lg shadow-sm">
-                <span class="text-xs text-gray-500 uppercase tracking-wide mb-1">Weight</span>
-                <span class="text-base font-semibold text-gray-900">{{ product.weight }} lbs</span>
+              <div class="flex flex-col p-2.5 bg-white rounded-md border border-stone-200">
+                <span class="text-xs text-gray-500 uppercase mb-1">Weight</span>
+                <span class="text-sm font-medium text-gray-900">{{ product.weight }} lbs</span>
               </div>
             </div>
 
-            <div class="pt-4 border-t border-gray-200">
-              <span class="text-xs text-gray-500 uppercase tracking-wide">SKU: </span>
+            <div class="pt-3 border-t border-stone-200">
+              <span class="text-xs text-gray-500 uppercase">SKU: </span>
               <span
-                class="text-sm font-mono text-gray-700 font-semibold bg-gray-100 px-2 py-1 rounded"
-                >{{ product.sku }}</span
+                class="text-xs font-mono text-gray-700 font-medium bg-white px-2 py-1 rounded border border-stone-200"
               >
+                {{ product.sku }}
+              </span>
             </div>
           </div>
           <div class="mt-auto space-y-4">
             <div class="flex items-center justify-between">
-              <span class="text-sm font-bold text-gray-900">Quantity:</span>
-              <div
-                class="flex items-center border-2 border-gray-200 rounded-xl overflow-hidden shadow-sm"
-              >
+              <span class="text-sm font-semibold text-gray-900">Quantity:</span>
+              <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
                 <button
                   (click)="decreaseQuantity()"
                   [disabled]="quantity <= 1"
-                  class="p-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+                  class="p-2 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <lucide-icon [img]="Minus" class="w-4 h-4 text-gray-600"></lucide-icon>
                 </button>
-                <div class="px-6 py-3 min-w-16 text-center bg-gray-50">
-                  <span class="font-bold text-xl text-gray-900">{{ quantity }}</span>
+                <div class="px-5 py-2 min-w-14 text-center bg-gray-50">
+                  <span class="font-semibold text-base text-gray-900">{{ quantity }}</span>
                 </div>
                 <button
                   (click)="increaseQuantity()"
                   [disabled]="!inStock || quantity >= product.stock"
-                  class="p-3 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
+                  class="p-2 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
                 >
                   <lucide-icon [img]="Plus" class="w-4 h-4 text-gray-600"></lucide-icon>
                 </button>
               </div>
             </div>
-
-            <!-- Total Price -->
-            <div class="mb-6 pb-6 border-b border-gray-100">
-              <div class="flex items-baseline gap-3">
-                <span class="text-2xl font-bold">
+            <div class="py-3 border-y border-gray-200">
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-medium text-gray-600">Total:</span>
+                <span class="text-2xl font-bold text-gray-900">
                   ${{ (quantity > 1 ? totalPrice : displayPrice) | number : '1.2-2' }}
                 </span>
-                <span class="text-sm text-gray-500">Total</span>
               </div>
             </div>
-            <div class="flex gap-3 mb-6">
+            <div class="flex gap-3">
               <button
                 (click)="addToCart(product)"
                 [disabled]="!inStock"
-                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-linear-to-r from-gray-800 to-gray-900 text-white rounded-xl font-bold hover:from-gray-900 hover:to-black transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
+                class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-amber-700 to-amber-800 text-white rounded-lg text-sm font-semibold hover:from-amber-800 hover:to-amber-900 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <lucide-icon [img]="ShoppingCart" class="w-5 h-5"></lucide-icon>
+                <lucide-icon [img]="ShoppingCart" class="w-4 h-4"></lucide-icon>
                 <span>{{ inStock ? 'Add to Cart' : 'Out of Stock' }}</span>
               </button>
 
               <button
                 [disabled]="!inStock"
-                class="flex-1 flex items-center justify-center gap-4 px-4 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white rounded-xl font-bold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-none text-base"
+                class="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-stone-700 to-stone-800 text-white rounded-lg text-sm font-semibold hover:from-stone-800 hover:to-stone-900 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <span>Buy Now</span>
               </button>
             </div>
-            <div class="pt-6 border-t border-gray-100">
-              <div class="grid grid-cols-2 gap-4">
+            <div class="pt-4 border-t border-gray-200">
+              <div class="grid grid-cols-2 gap-3">
                 <div
-                  class="flex items-center gap-3 p-4 bg-linear-to-r from-blue-50 to-indigo-50 rounded-2xl shadow-sm"
+                  class="flex items-center gap-2 p-3 bg-gradient-to-r from-amber-50 to-orange-50 rounded-lg"
                 >
-                  <lucide-icon [img]="Truck" class="w-5 h-5 text-blue-600 shrink-0"></lucide-icon>
+                  <lucide-icon [img]="Truck" class="w-4 h-4 text-amber-700 shrink-0"></lucide-icon>
                   <div>
-                    <p class="text-sm font-bold text-gray-900">Free Shipping</p>
+                    <p class="text-xs font-semibold text-gray-900">Free Shipping</p>
                     <p class="text-xs text-gray-600">On orders over $100</p>
                   </div>
                 </div>
                 <div
-                  class="flex items-center gap-3 p-4 bg-linear-to-r from-green-50 to-emerald-50 rounded-2xl shadow-sm"
+                  class="flex items-center gap-2 p-3 bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg"
                 >
                   <lucide-icon
                     [img]="RotateCcw"
-                    class="w-5 h-5 text-green-600 shrink-0"
+                    class="w-4 h-4 text-green-700 shrink-0"
                   ></lucide-icon>
                   <div>
-                    <p class="text-sm font-bold text-gray-900">Easy Returns</p>
+                    <p class="text-xs font-semibold text-gray-900">Easy Returns</p>
                     <p class="text-xs text-gray-600">30-day policy</p>
                   </div>
                 </div>
@@ -266,113 +252,5 @@
       </div>
     </div>
   </div>
-</div>
-
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
-    <div class="p-8 lg:p-10 border-b border-gray-100">
-      <h2 class="text-3xl font-bold text-gray-900 mb-8 flex items-center gap-3">
-        <lucide-icon [img]="Star" class="w-8 h-8 text-yellow-500"></lucide-icon>
-        Customer Ratings & Reviews
-      </h2>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div
-          class="flex flex-col items-center justify-center p-8 bg-linear-to-br from-yellow-50 to-orange-50 rounded-2xl shadow-lg"
-        >
-          <div
-            class="text-6xl font-bold bg-linear-to-r from-yellow-500 to-orange-500 bg-clip-text text-transparent mb-3"
-          >
-            4.8
-          </div>
-          <div class="flex gap-1 mb-3">
-            <span *ngFor="let i of [1, 2, 3, 4, 5]" class="text-2xl">{{
-              i <= 4 ? '⭐' : '☆'
-            }}</span>
-          </div>
-          <p class="text-lg font-semibold text-gray-700">Based on 128 reviews</p>
-        </div>
-        <div class="md:col-span-2 space-y-4">
-          <div *ngFor="let rating of [5, 4, 3, 2, 1]" class="flex items-center gap-4">
-            <span class="text-base font-semibold text-gray-800 w-12 flex items-center gap-1"
-              >{{ rating }} <span class="text-yellow-500">⭐</span></span
-            >
-            <div class="flex-1 bg-gray-200 rounded-full h-3 shadow-inner">
-              <div
-                class="bg-linear-to-r from-yellow-400 to-orange-400 h-3 rounded-full shadow-md transition-all duration-300"
-                [style.width.%]="
-                  rating === 5 ? 85 : rating === 4 ? 65 : rating === 3 ? 35 : rating === 2 ? 15 : 5
-                "
-              ></div>
-            </div>
-            <span class="text-base font-semibold text-gray-600 w-12 text-right">{{
-              rating === 5
-                ? '85%'
-                : rating === 4
-                ? '65%'
-                : rating === 3
-                ? '35%'
-                : rating === 2
-                ? '15%'
-                : '5%'
-            }}</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="p-8 lg:p-10">
-      <h3 class="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
-        <lucide-icon [img]="MessageCircle" class="w-6 h-6 text-gray-600"></lucide-icon>
-        What Our Customers Say
-      </h3>
-
-      <div class="space-y-8">
-        <div
-          *ngFor="let review of [1, 2, 3]; let i = index"
-          class="pb-8 border-b border-gray-100 last:border-b-0 group"
-        >
-          <div class="flex justify-between items-start mb-4">
-            <div>
-              <p class="font-bold text-xl text-gray-900">Customer {{ i + 1 }}</p>
-              <p class="text-sm text-gray-500 flex items-center gap-1">
-                Verified Purchase • <span class="text-yellow-500">⭐⭐⭐⭐⭐</span>
-                {{ 3 - i }} weeks ago
-              </p>
-            </div>
-            <div class="flex gap-0.5">
-              <span
-                *ngFor="let star of [1, 2, 3, 4, 5]"
-                class="text-lg group-hover:text-yellow-500 transition-colors duration-200"
-                >{{ star <= 5 ? '⭐' : '☆' }}</span
-              >
-            </div>
-          </div>
-          <p class="font-semibold text-gray-900 text-lg mb-3">Timeless elegance in every detail!</p>
-          <p class="text-gray-700 text-base leading-relaxed mb-4 italic bg-gray-50 p-4 rounded-xl">
-            The craftsmanship is outstanding—solid wood with a flawless finish. It arrived swiftly
-            and transformed our space. A true heirloom piece!
-          </p>
-          <div class="flex gap-6 text-sm">
-            <button
-              class="flex items-center gap-1 text-blue-600 hover:text-blue-800 font-semibold transition-colors"
-            >
-              👍 Helpful ({{ 12 + i * 5 }})
-            </button>
-            <button
-              class="flex items-center gap-1 text-gray-500 hover:text-gray-700 transition-colors"
-            >
-              👎 Not Helpful ({{ 1 + i }})
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="mt-12 text-center">
-        <button
-          class="px-8 py-3 border-2 border-gray-300 rounded-2xl text-gray-900 font-bold hover:bg-linear-to-r hover:from-gray-50 hover:to-blue-50 transition-all duration-300 shadow-md hover:shadow-lg"
-        >
-          Load More Reviews
-        </button>
-      </div>
-    </div>
-  </div>
+  <app-review></app-review>
 </div>

@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import {LucideAngularModule, ShoppingBag, Search, Heart } from 'lucide-angular';
+import {LucideAngularModule, ShoppingCart, Search, Heart } from 'lucide-angular';
 @Component({
   selector: 'app-header',
   standalone: true,
@@ -9,7 +9,7 @@ import {LucideAngularModule, ShoppingBag, Search, Heart } from 'lucide-angular';
   templateUrl: './header.html',
 })
 export class Header {
-  shoppingBag = ShoppingBag;
+  ShoppingCart = ShoppingCart;
   search = Search;
   heart = Heart;
 
