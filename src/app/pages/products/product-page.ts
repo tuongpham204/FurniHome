@@ -5,14 +5,14 @@ import { ProductService } from '../../service/product.service';
 import { ProductCard } from '../../shared/product-card/product-card';
 import { Product } from '../../models/product.model';
 import { LucideAngularModule, Search } from 'lucide-angular';
-
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, FormsModule, ProductCard, LucideAngularModule],
+  imports: [CommonModule, FormsModule, ProductCard, LucideAngularModule, ],
   templateUrl: './product-page.html',
 })
 export class ProductPage implements OnInit {
+ 
   products: Product[] = [];
   filteredProducts: Product[] = [];
 
@@ -22,14 +22,12 @@ export class ProductPage implements OnInit {
   selectedCategory: string = 'All';
   searchText: string = '';
 
-
   pageSize = 10;
   currentPage = 1;
   totalCount = 0;
   totalPages = 0;
   totalPagesArray: number[] = [];
 
- 
   readonly Search = Search;
 
   categories: string[] = ['All', 'Chair', 'Table', 'Sofa', 'Bed', 'Lamp'];
@@ -79,9 +77,7 @@ export class ProductPage implements OnInit {
     if (this.searchText.trim()) {
       const keyword = this.searchText.toLowerCase();
       result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(keyword) ||
-          p.category?.toLowerCase().includes(keyword)
+        (p) => p.name.toLowerCase().includes(keyword) || p.category?.toLowerCase().includes(keyword)
       );
     }
 

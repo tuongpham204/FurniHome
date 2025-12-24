@@ -24,10 +24,7 @@ export class Cart implements OnInit {
   Minus = Minus;
   Plus = Plus;
 
-  constructor(
-  private cartService: CartService,
-  private toastService: ToastService
-) {}
+  constructor(private cartService: CartService, private toastService: ToastService) {}
 
   ngOnInit(): void {
     this.cartService.cartItems$.subscribe((items) => {
@@ -45,15 +42,13 @@ export class Cart implements OnInit {
   }
 
   removeItem(productId: string): void {
-  this.cartService.removeItem(productId);
-  this.toastService.success('Product removed from cart', 'Removed', 2500);
-}
-
+    this.cartService.removeItem(productId);
+    this.toastService.success('Product removed from cart', 'Removed', 2500);
+  }
 
   clearCart(): void {
-    if (confirm('Are you sure you want to clear your entire cart?')) {
-      this.cartService.clearCart();
-    }
+    this.cartService.clearCart();
+    this.toastService.success('Cart cleared successfully', 'Cleared', 2500);
   }
 
   calculateTotals(): void {

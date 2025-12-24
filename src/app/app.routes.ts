@@ -17,16 +17,24 @@ export const routes: Routes = [
       import('./pages/product-detail/product-detail').then((m) => m.ProductDetail),
   },
   { path: 'cart', loadComponent: () => import('./pages/cart/cart').then((m) => m.Cart) },
-  { 
-    path: 'aboutus', loadComponent: () => import('./shared/about-us/about-us').then((m) => m.AboutUs)
+  {
+    path: 'aboutus',
+    loadComponent: () => import('./shared/about-us/about-us').then((m) => m.AboutUs),
   },
-  { 
-    path: 'contactus', loadComponent: () => import('./shared/contact/contact').then((m) => m.Contact)
+  {
+    path: 'contactus',
+    loadComponent: () => import('./shared/contact/contact').then((m) => m.Contact),
   },
-  { 
-    path: 'wishlist', loadComponent: () => import('./pages/wishlist/wishlist').then((m) => m.Wishlist)
+  {
+    path: 'wishlist',
+    loadComponent: () => import('./pages/wishlist/wishlist').then((m) => m.Wishlist),
   },
-  { 
-    path: 'checkout', loadComponent: () => import('./pages/checkout/checkout').then((m) => m.Checkout)
-  }
+  {
+    path: 'checkout',
+    loadComponent: () => import('./pages/checkout/checkout').then((m) => m.Checkout),
+  },
+  {
+    path: 'blog',
+    loadComponent: () => import('./shared/blog/blog').then((m) => m.Blog),
+  },
 ];

@@ -1,98 +1,89 @@
-<header class="w-full bg-white/95 backdrop-blur-md">
-  <div class="flex items-center justify-between px-8 lg:px-14 py-4">
+<header class="w-full bg-white/90 backdrop-blur-xl border-b border-gray-100">
+  <div class="flex items-center justify-between px-6 lg:px-14 py-4">
     <div class="flex-1">
       <button
-        class="text-gray-800 font-serif text-2xl lg:text-3xl font-semibold hover:text-gray-600 transition-colors duration-300 tracking-tight"
+        class="text-gray-900 font-serif text-2xl lg:text-3xl font-semibold tracking-tight hover:opacity-80 transition"
         [routerLink]="['/']"
       >
         FurniHome
       </button>
-      <p class="text-xs text-gray-400 font-light tracking-wider hidden sm:block">Modern Living</p>
+      <p class="text-xs text-gray-400 tracking-widest mt-0.5 hidden sm:block">MODERN LIVING</p>
     </div>
 
     <nav class="hidden md:flex flex-1 justify-center">
-      <div class="flex space-x-8 lg:space-x-10 text-gray-600 font-medium text-base">
+      <div class="flex items-center gap-8 lg:gap-10 text-gray-600 font-medium text-[15px]">
         <a
-          class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
-          [routerLink]="['/']"
+          *ngFor="
+            let item of [
+              { label: 'Home', link: '/' },
+              { label: 'Shop', link: '/products' },
+              { label: 'About', link: '/aboutus' },
+              { label: 'Contact', link: '/contactus' },
+              { label: 'Blog', link: '/blog' }
+            ]
+          "
+          [routerLink]="[item.link]"
+          routerLinkActive="text-gray-900"
+          class="relative py-1 transition-colors duration-200 group"
         >
-          Home
+          {{ item.label }}
           <span
-            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
-          ></span>
-        </a>
-        <a
-          class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
-          [routerLink]="['/products']"
-        >
-          Shop
-          <span
-            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
-          ></span>
-        </a>
-
-        <a
-          [routerLink]="['/aboutus']"
-          class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
-        >
-          About us
-          <span
-            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
-          ></span>
-        </a>
-
-        <a
-          class="hover:text-gray-900 transition-colors duration-200 cursor-pointer relative group py-1"
-          [routerLink]="['/contactus']"
-        >
-          Contact us
-          <span
-            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"
+            class="absolute left-1/2 -translate-x-1/2 -bottom-1 h-0.5 w-0 bg-gray-900 rounded-full transition-all duration-300 group-hover:w-full"
           ></span>
         </a>
       </div>
     </nav>
 
-    <div class="flex-1 flex items-center justify-end space-x-4 lg:space-x-5">
+    <div class="flex-1 flex items-center justify-end gap-3 lg:gap-4">
       <button
-        class="relative p-2 hover:bg-gray-50 rounded-full transition-all duration-200 group"
-        title="Favorites"
+        class="p-2 rounded-full hover:bg-gray-100 transition-transform duration-200 hover:scale-105"
         [routerLink]="['/wishlist']"
       >
-        <lucide-icon
-          [img]="heart"
-          class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"
-        ></lucide-icon>
+        <lucide-icon [img]="heart" class="w-5 h-5 text-gray-600"></lucide-icon>
       </button>
 
       <button
-        class="relative p-2 hover:bg-gray-50 rounded-full transition-all duration-200 group"
-        title="Shopping bag"
+        class="p-2 rounded-full hover:bg-gray-100 transition-transform duration-200 hover:scale-105"
         [routerLink]="['/cart']"
       >
-        <lucide-icon
-          [img]="ShoppingCart"
-          class="w-5 h-5 text-gray-600 group-hover:text-gray-900 transition-colors"
-        ></lucide-icon>
+        <lucide-icon [img]="ShoppingCart" class="w-5 h-5 text-gray-600"></lucide-icon>
       </button>
+
       <div class="hidden lg:block h-6 w-px bg-gray-200"></div>
 
-      <div class="hidden lg:flex items-center space-x-3">
+      <div class="hidden lg:block relative">
         <button
-          class="px-4 py-1.5 text-base font-medium text-gray-700 hover:text-gray-900 transition-colors duration-200 cursor-pointer"
-          [routerLink]="['/login']"
+          class="p-2 rounded-full hover:bg-gray-100 transition-transform duration-200 hover:scale-105"
+          (click)="toggleDropdown()"
         >
-          Login
+          <lucide-icon [img]="menuIcon" class="w-5 h-5 text-gray-600"></lucide-icon>
         </button>
 
-        <button
-          class="px-5 py-2 text-base font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-all duration-200 shadow-sm cursor-pointer"
-          [routerLink]="['/signup']"
+        <div
+          *ngIf="isDropdownOpen"
+          class="absolute right-0 mt-3 w-52 p-2 bg-white rounded-2xl shadow-xl ring-1 ring-gray-300 overflow-hidden transition-all duration-200"
         >
-          Sign Up
-        </button>
+          <a
+            *ngFor="
+              let item of [
+                { label: 'Login', link: '/login' },
+                { label: 'Sign Up', link: '/signup' },
+                { label: 'Account', link: '/account' }
+              ]
+            "
+            [routerLink]="[item.link]"
+            (click)="toggleDropdown()"
+            class="block px-5 py-3 text-sm rounded-lg text-gray-800 hover:bg-gray-200 hover:text-black transition"
+          >
+            {{ item.label }}
+          </a>
+        </div>
       </div>
-      <button class="md:hidden p-2 hover:bg-gray-50 rounded-lg transition-colors">
+
+      <button
+        class="md:hidden p-2 rounded-lg hover:bg-gray-100 transition"
+        (click)="toggleMobileMenu()"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -108,6 +99,32 @@
           />
         </svg>
       </button>
+    </div>
+  </div>
+
+  <div *ngIf="isMobileMenuOpen" class="md:hidden px-6 pb-6 bg-white border-t border-gray-100">
+    <div class="mt-4 rounded-2xl bg-gray-50 p-5 space-y-4 text-gray-700">
+      <a
+        *ngFor="
+          let item of [
+            { label: 'Home', link: '/' },
+            { label: 'Shop', link: '/products' },
+            { label: 'About', link: '/aboutus' },
+            { label: 'Contact', link: '/contactus' },
+            { label: 'Blog', link: '/blog' }
+          ]
+        "
+        [routerLink]="[item.link]"
+        class="block hover:text-gray-900 transition"
+      >
+        {{ item.label }}
+      </a>
+
+      <div class="h-px bg-gray-200 my-3"></div>
+
+      <a [routerLink]="['/login']" class="block hover:text-gray-900">Login</a>
+      <a [routerLink]="['/signup']" class="block hover:text-gray-900">Sign Up</a>
+      <a [routerLink]="['/account']" class="block hover:text-gray-900">Account</a>
     </div>
   </div>
 </header>

@@ -1,0 +1,41 @@
+<div class="bg-gray-50 min-h-screen">
+  <div class="max-w-7xl mx-auto px-6 py-14">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Our Latest Blogs</h1>
+      <p class="mt-3 text-gray-600 max-w-2xl mx-auto">
+        Inspiration, tips, and ideas to help you create a modern and comfortable living space with
+        our furniture collections.
+      </p>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div
+        *ngFor="let post of posts"
+        class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition"
+      >
+        <div class="relative">
+          <img [src]="post.image" [alt]="post.title" class="h-56 w-full object-cover" />
+          <span
+            class="absolute top-4 left-4 bg-green-600 text-white text-xs font-medium px-3 py-1 rounded-full"
+          >
+            {{ post.category }}
+          </span>
+        </div>
+        <div class="p-6 flex flex-col h-full">
+          <h3 class="text-lg font-semibold text-gray-900 hover:text-green-600 transition">
+            {{ post.title }}
+          </h3>
+
+          <p class="mt-4 text-sm text-gray-600 leading-relaxed">
+            {{ post.description }}
+          </p>
+          <button
+            class="mt-6 inline-flex items-center gap-2 text-sm font-medium cursor-pointer text-green-600 hover:text-green-700"
+          >
+            Read More
+            <lucide-icon name="arrow-right" class="w-4 h-4"></lucide-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

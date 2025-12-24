@@ -17,6 +17,7 @@ import { Subscription } from 'rxjs';
 export class Wishlist implements OnInit, OnDestroy {
   wishlistItems: Product[] = [];
   Trash = Trash;
+  loading = false;
   private wishlistSub!: Subscription;
 
   constructor(

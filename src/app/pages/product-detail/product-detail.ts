@@ -19,7 +19,7 @@ import {
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, Review],
+  imports: [CommonModule, LucideAngularModule, Review , ],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail implements OnInit {
