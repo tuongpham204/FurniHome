@@ -6,6 +6,7 @@ import { Product } from '../../models/product.model';
 import { Review } from '../../shared/review/review';
 import { CartService } from '../../service/cart.service';
 import { WishlistService } from '../../service/wishlist.service';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 import {
   LucideAngularModule,
   Minus,
@@ -30,13 +31,11 @@ export class ProductDetail implements OnInit {
   error: string | null = null;
   quantity = 1;
 
+  activeTab: 'description' | 'specifications' = 'description';
   Minus = Minus;
   Plus = Plus;
   ShoppingCart = ShoppingCart;
-  Truck = Truck;
-  RotateCcw = RotateCcw;
   Star = Star;
-  MessageCircle = MessageCircle;
   Heart = Heart;
 
   constructor(
@@ -130,5 +129,8 @@ export class ProductDetail implements OnInit {
 
   get isInWishlist(): boolean {
     return this.wishlistService.isInWishlist(this.product!.id);
+  }
+  setTab(tab: 'description' | 'specifications'): void {
+    this.activeTab = tab;
   }
 }
