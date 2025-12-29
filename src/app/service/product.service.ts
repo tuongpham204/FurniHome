@@ -14,12 +14,13 @@ export class ProductService {
   getAllProducts(): Observable<Product[]> {
     return this.http.get<Product[]>(this.apiUrl);
   }
-  getProductById(id: string): Observable<Product> {
+  getProductById(id: number): Observable<Product> {
     return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
+
   getProductsByCategory(category: string): Observable<Product[]> {
-    return this.http.get<Product[]>(this.apiUrl).pipe(
-      map((products: Product[]) => products.filter(p => p.category === category))
-    );
+    return this.http
+      .get<Product[]>(this.apiUrl)
+      .pipe(map((products: Product[]) => products.filter((p) => p.category === category)));
   }
 }

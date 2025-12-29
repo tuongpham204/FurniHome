@@ -41,8 +41,6 @@ export class Contact {
       terms: [false, Validators.requiredTrue],
     });
   }
-
-  // ================= SUBMIT =================
   onSubmit(): void {
     if (this.contactForm.invalid) {
       this.contactForm.markAllAsTouched();
@@ -51,8 +49,6 @@ export class Contact {
 
     this.isSubmitting = true;
     this.contactForm.disable();
-
-    // Mock API submit
     setTimeout(() => {
       this.showSuccessMessage = true;
       this.isSubmitting = false;
@@ -71,8 +67,6 @@ export class Contact {
       }, 5000);
     }, 1000);
   }
-
-  // ================= VALIDATION HELPERS =================
   private isInvalid(controlName: string): boolean {
     const control = this.contactForm.get(controlName);
     return !!(control && control.invalid && (control.touched || control.dirty));

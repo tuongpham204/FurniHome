@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../service/product.service';
@@ -6,23 +6,23 @@ import { Product } from '../../models/product.model';
 import { Review } from '../../shared/review/review';
 import { CartService } from '../../service/cart.service';
 import { WishlistService } from '../../service/wishlist.service';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { RelateProduct } from '../../shared/relate-product/relate-product';
 import {
   LucideAngularModule,
   Minus,
   Plus,
   ShoppingCart,
-  Truck,
-  RotateCcw,
   Star,
-  MessageCircle,
   Heart,
+  Check,
+  Truck,
+  RefreshCw,
 } from 'lucide-angular';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [CommonModule, LucideAngularModule, Review],
+  imports: [CommonModule, LucideAngularModule, Review, RelateProduct],
   templateUrl: './product-detail.html',
 })
 export class ProductDetail implements OnInit {
@@ -31,49 +31,80 @@ export class ProductDetail implements OnInit {
   error: string | null = null;
   quantity = 1;
 
-  activeTab: 'description' | 'specifications' = 'description';
+  // Tabs configuration
+  tabs = [
+    { id: 'description', label: 'Description' },
+    { id: 'specifications', label: 'Specifications' },
+    { id: 'reviews', label: 'Reviews (127)' },
+  ];
+
+  activeTab: 'description' | 'specifications' | 'reviews' = 'description';
+
+  // Icons
   Minus = Minus;
   Plus = Plus;
   ShoppingCart = ShoppingCart;
   Star = Star;
   Heart = Heart;
+  Check = Check;
+  Truck = Truck;
+  RefreshCw = RefreshCw;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private productService: ProductService,
     private cartService: CartService,
-    private wishlistService: WishlistService
+    private wishlistService: WishlistService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.route.params.subscribe((params) => {
-      const id = params['id'];
-      if (id) {
-        this.fetchProduct(id);
-      } else {
+      const id = Number(params['id']);
+      if (!id) {
         this.error = 'Invalid product ID';
         this.loading = false;
+        this.cdr.detectChanges();
+        return;
       }
+      this.fetchProduct(id);
     });
   }
 
-  fetchProduct(id: string): void {
+  fetchProduct(id: number): void {
     this.loading = true;
     this.error = null;
-    this.product = null;
-    this.quantity = 1;
 
     this.productService.getProductById(id).subscribe({
-      next: (product: Product) => {
+      next: (product) => {
         this.product = product;
-        this.loading = false;
+        setTimeout(() => {
+          this.loading = false;
+          this.cdr.detectChanges();
+          this.forceReflow();
+        }, 100);
       },
-      error: (err: Error) => {
-        this.error = 'Product not found. Please try again.';
+      error: () => {
+        this.error =
+          "Sorry, we couldn't find this product. It may have been removed or is temporarily unavailable.";
         this.loading = false;
+        this.cdr.detectChanges();
       },
     });
+  }
+
+  private forceReflow(): void {
+    const element = document.querySelector('.max-w-6xl');
+    if (element) {
+      void element.clientHeight;
+    }
+  }
+
+  onImageLoad(event: Event): void {
+    setTimeout(() => {
+      this.cdr.detectChanges();
+    }, 0);
   }
 
   get hasDiscount(): boolean {
@@ -115,22 +146,43 @@ export class ProductDetail implements OnInit {
   goBack(): void {
     this.router.navigate(['/products']);
   }
-  addToCart(product: Product): void {
-    this.cartService.addToCart(product);
+
+  addToCart(): void {
+    if (!this.product) return;
+    this.cartService.addToCart(this.product);
+
+    // Optional: Show success message
+    const button = document.querySelector('button[aria-label="Add to Cart"]');
+    if (button) {
+      const originalText = button.textContent;
+      button.innerHTML = '✓ Added to Cart';
+      button.classList.add('bg-green-600');
+
+      setTimeout(() => {
+        button.textContent = originalText;
+        button.classList.remove('bg-green-600');
+      }, 2000);
+    }
   }
-  toggleWishlist(product: Product, event: Event) {
+
+  toggleWishlist(event: Event) {
+    if (!this.product) return;
+
     event.preventDefault();
     event.stopPropagation();
 
-    this.isInWishlist
-      ? this.wishlistService.removeFromWishlist(product.id)
-      : this.wishlistService.addToWishlist(product);
+    if (this.isInWishlist) {
+      this.wishlistService.removeFromWishlist(this.product.id);
+    } else {
+      this.wishlistService.addToWishlist(this.product);
+    }
   }
 
   get isInWishlist(): boolean {
-    return this.wishlistService.isInWishlist(this.product!.id);
+    return this.product ? this.wishlistService.isInWishlist(this.product.id) : false;
   }
-  setTab(tab: 'description' | 'specifications'): void {
+
+  setTab(tab: 'description' | 'specifications' | 'reviews'): void {
     this.activeTab = tab;
   }
 }

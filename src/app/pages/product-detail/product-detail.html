@@ -1,204 +1,390 @@
-<div class="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
-  <div *ngIf="!loading && !error && product" class="max-w-6xl mx-auto">
-    <div class="bg-white rounded-xl shadow-sm">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 p-6 lg:p-10">
-        <div class="flex gap-4 h-[520px]">
-          <div class="flex flex-col gap-1.5 w-24 h-full">
-            <button
-              *ngFor="let i of [1, 2, 3, 4]; let idx = index"
-              class="aspect-square rounded-lg overflow-hidden border transition"
-              [class.border-gray-900]="idx === 0"
-              [class.border-gray-200]="idx !== 0"
-            >
-              <img [src]="product.image_path" class="w-full h-full object-cover" />
-            </button>
-          </div>
-          <div class="flex-1 space-y-4">
-            <div class="relative">
-              <div class="absolute top-3 left-3 z-10 flex flex-col gap-2">
-                <span
-                  *ngIf="hasDiscount"
-                  class="bg-red-500 text-white px-2.5 py-1 text-xs font-semibold rounded-md"
-                >
-                  -{{ discountPercentage }}%
-                </span>
-              </div>
-
-              <div class="aspect-square bg-gray-50 rounded-xl overflow-hidden">
-                <img
-                  [src]="product.image_path"
-                  [alt]="product.name"
-                  class="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-12">
+  <div *ngIf="loading" class="max-w-6xl mx-auto space-y-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
+      <div class="space-y-4">
+        <div class="aspect-square lg:aspect-4/5 rounded-lg bg-gray-200 animate-pulse"></div>
+        <div class="grid grid-cols-4 gap-3">
+          <div
+            *ngFor="let i of [1, 2, 3, 4]"
+            class="aspect-square rounded bg-gray-200 animate-pulse"
+          ></div>
         </div>
-        <div class="flex flex-col space-y-6">
-          <div class="space-y-1">
-            <span class="text-xs uppercase tracking-wide text-gray-500">
-              {{ product.category }}
-            </span>
-            <h1 class="text-2xl lg:text-3xl font-semibold text-gray-900">
-              {{ product.name }}
-            </h1>
-          </div>
-          <div class="space-y-3">
-            <div class="flex items-end gap-3">
-              <span class="text-3xl font-bold text-gray-900">
-                ${{ displayPrice | number : '1.2-2' }}
-              </span>
-              <span *ngIf="hasDiscount" class="text-lg text-gray-400 line-through">
-                ${{ product.price | number : '1.2-2' }}
-              </span>
-            </div>
+      </div>
+      <div class="space-y-6">
+        <div class="h-3 bg-gray-200 rounded w-24 animate-pulse"></div>
+        <div class="h-8 bg-gray-200 rounded w-3/4 animate-pulse"></div>
+        <div class="h-6 bg-gray-200 rounded w-1/3 animate-pulse"></div>
+        <div class="space-y-2">
+          <div class="h-4 bg-gray-200 rounded animate-pulse"></div>
+          <div class="h-4 bg-gray-200 rounded w-5/6 animate-pulse"></div>
+        </div>
+        <div class="h-12 bg-gray-200 rounded animate-pulse"></div>
+      </div>
+    </div>
+  </div>
 
-            <div class="flex items-center gap-4 text-sm text-gray-600">
-              <div class="flex items-center gap-1 text-yellow-400">★★★★☆</div>
-              <span>127 reviews</span>
-              <span class="flex items-center gap-1">
-                <span
-                  class="w-2 h-2 rounded-full"
-                  [ngClass]="{
-                    'bg-green-500': inStock,
-                    'bg-red-500': !inStock
-                  }"
-                ></span>
-                {{ inStock ? 'In stock' : 'Out of stock' }}
-              </span>
-            </div>
-          </div>
-          <div class="flex justify-between items-center">
-            <span class="text-sm font-medium text-gray-700">Quantity</span>
-            <div class="flex items-center border border-gray-300 rounded-lg">
-              <button
-                (click)="decreaseQuantity()"
-                [disabled]="quantity <= 1"
-                class="px-3 py-2 text-lg"
-              >
-                −
-              </button>
-              <span class="px-5 text-sm font-semibold">{{ quantity }}</span>
-              <button
-                (click)="increaseQuantity()"
-                [disabled]="!inStock || quantity >= product.stock"
-                class="px-3 py-2 text-lg"
-              >
-                +
-              </button>
-            </div>
-          </div>
-          <div class="flex justify-between text-sm text-gray-700">
-            <span>Total</span>
-            <span class="font-semibold"> ${{ totalPrice | number : '1.2-2' }} </span>
-          </div>
-          <div class="flex gap-3 pt-2">
+  <div
+    *ngIf="error && !loading"
+    class="flex flex-col items-center justify-center min-h-[60vh] px-4"
+  >
+    <div class="text-center space-y-4 max-w-md">
+      <h2 class="text-xl font-semibold text-gray-900">{{ error }}</h2>
+      <button
+        (click)="goBack()"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M10 19l-7-7m0 0l7-7m-7 7h18"
+          />
+        </svg>
+        Back to Products
+      </button>
+    </div>
+  </div>
+
+  <ng-container *ngIf="!loading && !error && product">
+    <div class="max-w-6xl mx-auto">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+        <div class="flex gap-4 lg:sticky lg:top-4 lg:self-start">
+          <div class="flex flex-col gap-3 w-24">
             <button
-              (click)="addToCart(product)"
-              [disabled]="!inStock"
-              class="flex-1 h-12 bg-gray-900 text-white rounded-lg font-semibold hover:bg-black transition disabled:opacity-50"
+              *ngFor="let i of [1, 2, 3, 4]"
+              class="relative aspect-square rounded-lg overflow-hidden border transition hover:border-gray-900"
+              [class.border-gray-900]="i === 1"
+              [class.border-gray-200]="i !== 1"
             >
-              Add to cart
+              <img
+                [src]="product.image_path"
+                [alt]="product.name"
+                class="w-full h-full object-cover"
+              />
             </button>
+          </div>
+
+          <div class="relative flex-1 aspect-3/4 bg-gray-100 rounded-xl overflow-hidden group">
+            <div
+              *ngIf="hasDiscount"
+              class="absolute top-4 left-4 z-10 bg-red-600 text-white px-3 py-1 text-xs font-bold rounded-full"
+            >
+              -{{ discountPercentage }}%
+            </div>
 
             <button
-              (click)="toggleWishlist(product, $event)"
-              class="h-12 w-12 flex items-center justify-center rounded-lg border border-gray-300 hover:bg-gray-100 transition"
-              [class.border-red-400]="isInWishlist"
+              (click)="toggleWishlist($event)"
+              class="absolute top-4 right-4 z-10 lg:hidden w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full shadow-lg flex items-center justify-center hover:bg-white transition-colors"
+              [class.bg-red-50]="isInWishlist"
             >
               <lucide-icon
                 [img]="Heart"
                 class="w-5 h-5"
                 [class.text-red-500]="isInWishlist"
-              ></lucide-icon>
+                [class.fill-red-500]="isInWishlist"
+              >
+              </lucide-icon>
+            </button>
+
+            <img
+              [src]="product.image_path"
+              [alt]="product.name"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            />
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <div>
+            <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-3 leading-tight">
+              {{ product.name }}
+            </h1>
+
+            <div class="flex items-center gap-4 flex-wrap">
+              <div class="flex items-center gap-3">
+                <div class="flex text-yellow-400 text-lg">★★★★☆</div>
+                <span class="text-sm font-medium text-gray-800">4.0</span>
+                <span class="text-sm text-gray-500">(127 verified reviews)</span>
+              </div>
+
+              <div class="h-4 w-px bg-gray-300 hidden sm:block"></div>
+
+              <div class="flex items-center gap-1.5">
+                <span
+                  class="w-2 h-2 rounded-full"
+                  [class.bg-green-500]="inStock"
+                  [class.bg-red-500]="!inStock"
+                ></span>
+                <span
+                  class="text-sm font-medium"
+                  [class.text-green-700]="inStock"
+                  [class.text-red-700]="!inStock"
+                >
+                  {{ inStock ? 'In Stock' : 'Out of Stock' }}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <span class="text-3xl lg:text-4xl font-bold text-gray-900">
+              ${{ displayPrice | number : '1.2-2' }}
+            </span>
+            <span *ngIf="hasDiscount" class="text-xl text-gray-400 line-through">
+              ${{ product.price | number : '1.2-2' }}
+            </span>
+            <span
+              *ngIf="hasDiscount"
+              class="text-sm font-semibold text-red-600 bg-red-50 px-2.5 py-1 rounded-md"
+            >
+              Save ${{ product.price - displayPrice | number : '1.2-2' }}
+            </span>
+          </div>
+
+          <p class="text-gray-700 leading-relaxed text-base max-w-prose">
+            {{ product.short_description }}
+          </p>
+
+          <div class="space-y-3 pt-2">
+            <label class="block text-sm font-semibold text-gray-900">Quantity</label>
+            <div class="flex items-center gap-4">
+              <div
+                class="inline-flex items-center border-2 border-gray-300 rounded-lg overflow-hidden"
+              >
+                <button
+                  (click)="decreaseQuantity()"
+                  [disabled]="quantity <= 1"
+                  class="w-12 h-12 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <lucide-icon [img]="Minus" class="w-4 h-4"></lucide-icon>
+                </button>
+                <span
+                  class="w-16 h-12 flex items-center justify-center font-semibold text-gray-900 border-x-2 border-gray-300"
+                >
+                  {{ quantity }}
+                </span>
+                <button
+                  (click)="increaseQuantity()"
+                  [disabled]="!inStock || quantity >= product.stock"
+                  class="w-12 h-12 flex items-center justify-center hover:bg-gray-100 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  <lucide-icon [img]="Plus" class="w-4 h-4"></lucide-icon>
+                </button>
+              </div>
+              <span class="text-sm text-gray-600"> {{ product.stock }} available </span>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between py-4 border-t border-b border-gray-200">
+            <span class="text-sm font-semibold text-gray-700 uppercase tracking-wide"
+              >Total Price</span
+            >
+            <span class="text-2xl lg:text-3xl font-bold text-gray-900">
+              ${{ totalPrice | number : '1.2-2' }}
+            </span>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              (click)="addToCart()"
+              [disabled]="!inStock"
+              aria-label="Add to Cart"
+              class="flex-1 h-14 bg-gray-700 text-white font-semibold rounded-lg hover:bg-gray-900 transition-all disabled:bg-gray-300 disabled:cursor-not-allowed active:scale-[0.98] flex items-center justify-center gap-2 text-base"
+            >
+              <lucide-icon [img]="ShoppingCart" class="w-5 h-5"></lucide-icon>
+              Add to Cart
+            </button>
+
+            <button
+              (click)="toggleWishlist($event)"
+              class="hidden lg:flex w-14 h-14 items-center justify-center rounded-lg border-2 transition-all hover:bg-gray-50"
+              [class.border-red-400]="isInWishlist"
+              [class.bg-red-50]="isInWishlist"
+              [class.border-gray-300]="!isInWishlist"
+            >
+              <lucide-icon
+                [img]="Heart"
+                class="w-6 h-6"
+                [class.text-red-500]="isInWishlist"
+                [class.fill-red-500]="isInWishlist"
+              >
+              </lucide-icon>
             </button>
           </div>
-          <div class="grid grid-cols-2 gap-3 pt-4 text-xs">
-            <div class="rounded-lg border border-gray-300 p-3">
-              <p class="font-semibold">Free Shipping</p>
-              <p class="text-gray-500">Orders over $100</p>
+
+          <div class="grid grid-cols-2 gap-3 pt-4">
+            <div
+              class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors"
+            >
+              <lucide-icon
+                [img]="Truck"
+                class="w-5 h-5 text-gray-700 shrink-0 mt-0.5"
+              ></lucide-icon>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Free Shipping</p>
+                <p class="text-xs text-gray-600 mt-0.5">Orders over $100</p>
+              </div>
             </div>
-            <div class="rounded-lg border border-gray-300 p-3">
-              <p class="font-semibold">Easy Returns</p>
-              <p class="text-gray-500">30-day policy</p>
+
+            <div
+              class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors"
+            >
+              <lucide-icon
+                [img]="RefreshCw"
+                class="w-5 h-5 text-gray-700 shrink-0 mt-0.5"
+              ></lucide-icon>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Easy Returns</p>
+                <p class="text-xs text-gray-600 mt-0.5">30-day policy</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors"
+            >
+              <lucide-icon
+                [img]="Check"
+                class="w-5 h-5 text-gray-700 shrink-0 mt-0.5"
+              ></lucide-icon>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">{{ product.wood_type }}</p>
+                <p class="text-xs text-gray-600 mt-0.5">Premium wood</p>
+              </div>
+            </div>
+
+            <div
+              class="flex items-start gap-3 p-4 bg-gray-50 rounded-lg border border-gray-100 hover:border-gray-200 transition-colors"
+            >
+              <lucide-icon
+                [img]="Star"
+                class="w-5 h-5 text-gray-700 shrink-0 mt-0.5"
+              ></lucide-icon>
+              <div>
+                <p class="font-semibold text-sm text-gray-900">Handcrafted</p>
+                <p class="text-xs text-gray-600 mt-0.5">Made with care</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <section class="mt-16">
-      <div class="flex gap-8 border-b border-gray-200">
-        <button
-          (click)="setTab('description')"
-          class="pb-4 font-medium text-sm transition-colors relative"
-          [ngClass]="{
-            'text-gray-900': activeTab === 'description',
-            'text-gray-500 hover:text-gray-700': activeTab !== 'description'
-          }"
-        >
-          Description
-          <span
-            *ngIf="activeTab === 'description'"
-            class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
-          ></span>
-        </button>
-        <button
-          (click)="setTab('specifications')"
-          class="pb-4 font-medium text-sm transition-colors relative"
-          [ngClass]="{
-            'text-gray-900': activeTab === 'specifications',
-            'text-gray-500 hover:text-gray-700': activeTab !== 'specifications'
-          }"
-        >
-          Specifications
-          <span
-            *ngIf="activeTab === 'specifications'"
-            class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
-          ></span>
-        </button>
-      </div>
-      <div class="py-8">
-        <ng-container *ngIf="activeTab === 'description'">
-          <div class="max-w-2xl space-y-6">
-            <div>
-              <h3 class="text-lg font-semibold text-gray-900 mb-3">About this product</h3>
-              <p class="text-gray-600 leading-relaxed">{{ product.description }}</p>
-            </div>
-          </div>
-        </ng-container>
 
-        <ng-container *ngIf="activeTab === 'specifications'">
-          <div class="max-w-2xl">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div class="p-4 bg-gray-50 rounded-lg border border-gray-300">
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">
-                  Wood Type
-                </p>
-                <p class="text-base font-semibold text-gray-900">{{ product.wood_type }}</p>
-              </div>
-              <div class="p-4 bg-gray-50 rounded-lg border border-gray-300">
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">Finish</p>
-                <p class="text-base font-semibold text-gray-900">{{ product.finish }}</p>
-              </div>
-              <div class="p-4 bg-gray-50 rounded-lg border border-gray-300">
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">
-                  Dimensions
-                </p>
-                <p class="text-base font-semibold text-gray-900">
-                  {{ product.dimensions.width }}" × {{ product.dimensions.height }}"
-                </p>
-              </div>
-              <div class="p-4 bg-gray-50 rounded-lg border border-gray-300">
-                <p class="text-xs font-medium uppercase tracking-wide text-gray-500 mb-2">Weight</p>
-                <p class="text-base font-semibold text-gray-900">{{ product.weight }} lbs</p>
-              </div>
-            </div>
+      <section class="mt-16 lg:mt-24">
+        <div class="border-b border-gray-200">
+          <nav class="flex gap-8 overflow-x-auto scrollbar-hide" role="tablist">
+            <button
+              (click)="setTab('description')"
+              role="tab"
+              [attr.aria-selected]="activeTab === 'description'"
+              class="pb-4 px-1 text-sm font-semibold whitespace-nowrap transition-colors relative"
+              [class.text-gray-900]="activeTab === 'description'"
+              [class.text-gray-400]="activeTab !== 'description'"
+            >
+              Description
+              <span
+                *ngIf="activeTab === 'description'"
+                class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
+              ></span>
+            </button>
+
+            <button
+              (click)="setTab('specifications')"
+              role="tab"
+              [attr.aria-selected]="activeTab === 'specifications'"
+              class="pb-4 px-1 text-sm font-semibold whitespace-nowrap transition-colors relative"
+              [class.text-gray-900]="activeTab === 'specifications'"
+              [class.text-gray-500]="activeTab !== 'specifications'"
+            >
+              Specifications
+              <span
+                *ngIf="activeTab === 'specifications'"
+                class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
+              ></span>
+            </button>
+
+            <button
+              (click)="setTab('reviews')"
+              role="tab"
+              [attr.aria-selected]="activeTab === 'reviews'"
+              class="pb-4 px-1 text-sm font-semibold whitespace-nowrap transition-colors relative"
+              [class.text-gray-900]="activeTab === 'reviews'"
+              [class.text-gray-500]="activeTab !== 'reviews'"
+            >
+              Reviews (127)
+              <span
+                *ngIf="activeTab === 'reviews'"
+                class="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
+              ></span>
+            </button>
+          </nav>
+        </div>
+
+        <div class="py-12">
+          <div *ngIf="activeTab === 'description'" class="max-w-3xl space-y-6">
+            <h3 class="text-2xl font-bold text-gray-900">Why you’ll love it</h3>
+
+            <p class="text-gray-700 leading-relaxed text-base">
+              {{ product.description }}
+            </p>
           </div>
-        </ng-container>
+
+          <div *ngIf="activeTab === 'specifications'" class="max-w-3xl">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">Technical Specifications</h3>
+            <dl class="divide-y divide-gray-200">
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">Wood Type</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  {{ product.wood_type }}
+                </dd>
+              </div>
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">Finish</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  {{ product.finish }}
+                </dd>
+              </div>
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">Dimensions</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  {{ product.dimensions.width }}" W × {{ product.dimensions.height }}" H ×
+                  {{ product.dimensions.depth || 24 }}" D
+                </dd>
+              </div>
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">Weight</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  {{ product.weight }} lbs
+                </dd>
+              </div>
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">SKU</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  FRN-{{ product.id }}-{{ product.category.substring(0, 3).toUpperCase() }}
+                </dd>
+              </div>
+              <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <dt class="text-sm font-medium text-gray-500">Category</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 font-medium">
+                  {{ product.category }}
+                </dd>
+              </div>
+            </dl>
+          </div>
+
+          <div *ngIf="activeTab === 'reviews'">
+            <app-review></app-review>
+          </div>
+        </div>
+      </section>
+
+      <div class="mt-16 border-t border-gray-200 pt-16">
+        <app-relate-product
+          [currentProductId]="product.id"
+          [category]="product.category"
+          [limit]="5"
+        >
+        </app-relate-product>
       </div>
-    </section>
-    <div class="mt-14">
-      <app-review></app-review>
     </div>
-  </div>
+  </ng-container>
 </div>

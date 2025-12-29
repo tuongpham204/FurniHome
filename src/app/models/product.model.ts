@@ -10,6 +10,7 @@ export interface Product {
   id: string;
   name: string;
   category: string;
+  short_description: string;
   description: string;
   wood_type: string;
   finish: string;
