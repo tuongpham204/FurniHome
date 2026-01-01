@@ -1,59 +1,92 @@
-# FurDecor
+# FurniHome – Furniture E-commerce Web
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.1.
+A frontend-focused e-commerce web application for furniture shopping, built with **Angular** and **Tailwind CSS**, using **JSON Server** as a mock REST API.  
+This project is created as a **portfolio project for Frontend Intern positions**, focusing on Angular fundamentals, API integration, and responsive UI.
 
-## Development server
+---
 
-To start a local development server, run:
+## 🔗 Live Demo
 
-```bash
-ng serve
-```
+https://furni-home-pi.vercel.app/
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+---
 
-## Code scaffolding
+## ✨ Features
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- Product listing fetched from REST API
+- Product detail page with images, description, and price
+- Shopping cart: add, update quantity, remove products
+- Cart summary and basic checkout UI
+- Responsive design for desktop and mobile
+- Clean UI built with Tailwind CSS
 
-```bash
-ng generate component component-name
-```
+---
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## 🛠 Tech Stack
 
-```bash
-ng generate --help
-```
+- **Framework:** Angular
+- **Styling:** Tailwind CSS
+- **Mock API:** JSON Server
+- **Language:** TypeScript
+- **Package Manager:** npm
 
-## Building
+---
 
-To build the project run:
+---
 
-```bash
-ng build
-```
+## ⚙️ Setup & Run Locally
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+### 1. Clone the repository
 
-## Running unit tests
+git clone https://github.com/tuongpham204/FurniHome.git
+cd FurniHome
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+### 2. Install dependencies
 
-```bash
-ng test
-```
+npm install
 
-## Running end-to-end tests
+### 3. Run JSON Server (Mock API)
 
-For end-to-end (e2e) testing, run:
+Make sure you have a db.json file in the root directory.
 
-```bash
-ng e2e
-```
+npx json-server --watch db.json --port 3000
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+### 4. Run Angular development server
 
-## Additional Resources
+npm start
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Open your browser at:
+
+http://localhost:4200
+
+### 🧠 What I Learned
+
+Building a frontend-focused e-commerce application with Angular
+
+Working with REST APIs using HttpClient and Observables
+
+Managing component state and data flow in Angular
+
+Creating responsive layouts with Tailwind CSS
+
+Separating UI components and business logic
+
+### 🚀 Possible Improvements
+
+Refactor the project into feature-based modules with lazy loading
+
+Improve cart state management using BehaviorSubject or Angular Signals
+
+Add global loading and error handling with HttpInterceptor
+
+Implement unit tests for services and components
+
+Improve accessibility (ARIA attributes, keyboard navigation)
+
+📌 Author
+
+Name: Tuong Pham
+
+Role: Frontend Developer (Intern-level)
+
+GitHub: https://github.com/tuongpham204
