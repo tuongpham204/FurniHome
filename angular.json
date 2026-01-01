@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "FurDecor": {
+    "FurniHome": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -55,10 +55,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "FurDecor:build:production"
+              "buildTarget": "FurniHome:build:production"
             },
             "development": {
-              "buildTarget": "FurDecor:build:development"
+              "buildTarget": "FurniHome:build:development"
             }
           },
           "defaultConfiguration": "development"
