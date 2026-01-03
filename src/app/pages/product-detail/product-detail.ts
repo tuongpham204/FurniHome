@@ -31,7 +31,6 @@ export class ProductDetail implements OnInit {
   error: string | null = null;
   quantity = 1;
 
-  // Tabs configuration
   tabs = [
     { id: 'description', label: 'Description' },
     { id: 'specifications', label: 'Specifications' },
@@ -40,7 +39,6 @@ export class ProductDetail implements OnInit {
 
   activeTab: 'description' | 'specifications' | 'reviews' = 'description';
 
-  // Icons
   Minus = Minus;
   Plus = Plus;
   ShoppingCart = ShoppingCart;
