@@ -14,15 +14,11 @@ import { FormsModule } from '@angular/forms';
 export class Checkout implements OnInit {
   cartItems: CartItem[] = [];
   loadingCheckout: boolean = true;
-
-  // Price calculations
   subtotal: number = 0;
   shipping: number = 0;
   tax: number = 0;
   discount: number = 0;
   total: number = 0;
-
-  // Billing information
   billing = {
     firstName: '',
     lastName: '',
