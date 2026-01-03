@@ -3,13 +3,9 @@
 A frontend-focused e-commerce web application for furniture shopping, built with **Angular** and **Tailwind CSS**, using **JSON Server** as a mock REST API.  
 This project is created as a **portfolio project for Frontend Intern positions**, focusing on Angular fundamentals, API integration, and responsive UI.
 
----
-
 ## 🔗 Live Demo
 
 https://furni-home-pi.vercel.app/
-
----
 
 ## ✨ Features
 
@@ -20,26 +16,22 @@ https://furni-home-pi.vercel.app/
 - Responsive design for desktop and mobile
 - Clean UI built with Tailwind CSS
 
----
-
 ## 🛠 Tech Stack
 
-- **Framework:** Angular
+- **Framework:** Angular 18 
 - **Styling:** Tailwind CSS
 - **Mock API:** JSON Server
 - **Language:** TypeScript
 - **Package Manager:** npm
 
----
-
----
-
 ## ⚙️ Setup & Run Locally
 
 ### 1. Clone the repository
 
+``bash
 git clone https://github.com/tuongpham204/FurniHome.git
 cd FurniHome
+
 
 ### 2. Install dependencies
 
@@ -90,3 +82,4 @@ Name: Tuong Pham
 Role: Frontend Developer (Intern-level)
 
 GitHub: https://github.com/tuongpham204
+```
